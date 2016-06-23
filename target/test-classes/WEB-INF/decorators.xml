@@ -1,0 +1,21 @@
+<decorators defaultdir="/decorators">
+    <!-- 
+    <excludes>
+        <pattern>/40*.jsp</pattern>
+        <pattern>/*ajax=true*</pattern>
+        <pattern>/struts/*</pattern>
+        <pattern>/resources/*</pattern>
+        <pattern>/login*</pattern>
+    </excludes>
+     --> 
+    <decorator name="default" page="default.jsp">
+        <pattern>/home*</pattern>
+        <pattern>/editProfile*</pattern>
+        <pattern>/editUser*</pattern>
+        <pattern>/saveUser*</pattern>
+        <pattern>/admin/*</pattern>
+        <pattern>/facility/*</pattern>
+        <pattern>/selectFile*</pattern>
+        <pattern>/wms/*</pattern>
+    </decorator>
+</decorators>

@@ -1,0 +1,553 @@
+drop table if exists enumeration;
+
+drop table if exists enumeration_type;
+
+drop table if exists facility;
+
+drop table if exists facility_transition;
+
+drop table if exists party;
+
+drop table if exists party_group;
+
+drop table if exists party_relationship;
+
+drop table if exists party_relationship_type;
+
+drop table if exists party_role;
+
+drop table if exists party_user;
+
+drop table if exists person;
+
+drop table if exists price;
+
+drop table if exists product;
+
+drop table if exists reap_dtl;
+
+drop table if exists role_type;
+
+drop table if exists sale_plan;
+
+drop table if exists sale_plan_dtl;
+
+drop table if exists ship_car;
+
+drop table if exists shipment;
+
+drop table if exists status_item;
+
+drop table if exists status_type;
+
+drop table if exists status_valid_change;
+
+drop table if exists uom;
+
+drop table if exists uom_conversion;
+
+drop table if exists uom_type;
+
+/*==============================================================*/
+/* Table: enumeration                                           */
+/*==============================================================*/
+create table enumeration
+(
+   enum_id              bigint not null auto_increment,
+   enum_type_id         bigint,
+   enum_code            varchar(20),
+   sequence_id          int,
+   description          varchar(30),
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (enum_id)
+);
+
+/*==============================================================*/
+/* Table: enumeration_type                                      */
+/*==============================================================*/
+create table enumeration_type
+(
+   enum_type_id         bigint not null auto_increment,
+   parent_type_id       bigint,
+   has_table            int,
+   description          varchar(30),
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (enum_type_id)
+);
+
+/*==============================================================*/
+/* Table: facility                                              */
+/*==============================================================*/
+create table facility
+(
+   facility_id          bigint not null auto_increment,
+   parent_id            bigint,
+   facility_type_id     bigint,
+   owner_party_id       bigint,
+   facility_name        varchar(100),
+   geo_point_id         varchar(100),
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (facility_id)
+);
+
+/*==============================================================*/
+/* Table: facility_transition                                   */
+/*==============================================================*/
+create table facility_transition
+(
+   facility_transition_id bigint not null auto_increment,
+   facility_id          bigint,
+   in_out_type          int,
+   product_id           bigint,
+   num                  decimal(13,2),
+   uom_id               bigint,
+   tran_date            date,
+   biz_type             int,
+   biz_id               bigint,
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (facility_transition_id)
+);
+
+/*==============================================================*/
+/* Table: party                                                 */
+/*==============================================================*/
+create table party
+(
+   party_id             bigint not null auto_increment,
+   party_type_id        varchar(20),
+   status_id            bigint,
+   description          varchar(50),
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (party_id)
+);
+
+/*==============================================================*/
+/* Table: party_group                                           */
+/*==============================================================*/
+create table party_group
+(
+   pg_id                bigint not null auto_increment,
+   party_id             bigint,
+   group_name           varchar(50),
+   num_employees        int,
+   address              varchar(50),
+   phone                varchar(20),
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (pg_id)
+);
+
+/*==============================================================*/
+/* Table: party_relationship                                    */
+/*==============================================================*/
+create table party_relationship
+(
+   party_relationship_id bigint not null auto_increment,
+   party_relationship_type_id bigint,
+   party_id_from        bigint,
+   party_id_to          bigint,
+   role_type_id_from    bigint,
+   role_type_id_to      bigint,
+   from_date            date,
+   thru_date            date,
+   status_id            bigint,
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (party_relationship_id)
+);
+
+/*==============================================================*/
+/* Table: party_relationship_type                               */
+/*==============================================================*/
+create table party_relationship_type
+(
+   party_relationship_type_id bigint not null auto_increment,
+   parent_id            bigint,
+   has_table            int,
+   party_relationship_name varchar(100),
+   description          varchar(255),
+   role_type_valid_from varchar(100),
+   role_type_valid_to   varchar(100),
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (party_relationship_type_id)
+);
+
+/*==============================================================*/
+/* Table: party_role                                            */
+/*==============================================================*/
+create table party_role
+(
+   pr_id                bigint not null auto_increment,
+   party_id             bigint,
+   role_type_id         bigint,
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (pr_id)
+);
+
+/*==============================================================*/
+/* Table: party_user                                            */
+/*==============================================================*/
+create table party_user
+(
+   party_user           bigint not null auto_increment,
+   party_id             bigint,
+   user_id              bigint,
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (party_user)
+);
+
+/*==============================================================*/
+/* Table: person                                                */
+/*==============================================================*/
+create table person
+(
+   person_id            bigint not null auto_increment,
+   party_id             bigint,
+   name                 varchar(20),
+   personal_title       varchar(20),
+   gender               varchar(2),
+   card_id              varchar(20),
+   phone                varchar(20),
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (person_id)
+);
+
+/*==============================================================*/
+/* Table: price                                                 */
+/*==============================================================*/
+create table price
+(
+   price_id             bigint not null auto_increment,
+   product_id           bigint,
+   from_date            datetime,
+   thru_date            datetime,
+   price_type           varchar(30),
+   price                decimal(18,3),
+   price_uom_id         bigint,
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (price_id)
+);
+
+/*==============================================================*/
+/* Table: product                                               */
+/*==============================================================*/
+create table product
+(
+   product_id           bigint not null auto_increment,
+   product_name         varchar(100),
+   stand_uom_id         bigint,
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (product_id)
+);
+
+/*==============================================================*/
+/* Table: reap_dtl                                              */
+/*==============================================================*/
+create table reap_dtl
+(
+   reap_dtl_id          bigint not null auto_increment,
+   reap_party_id        bigint,
+   reap_for_party_id    bigint,
+   product_id           bigint,
+   num                  decimal(13,2),
+   uom_id               bigint,
+   reap_date            date,
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (reap_dtl_id)
+);
+
+/*==============================================================*/
+/* Table: role_type                                             */
+/*==============================================================*/
+create table role_type
+(
+   role_type_id         bigint not null auto_increment,
+   parent_id            bigint,
+   has_table            int,
+   description          varchar(255),
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (role_type_id)
+);
+
+/*==============================================================*/
+/* Table: sale_plan                                             */
+/*==============================================================*/
+create table sale_plan
+(
+   sale_plan_id         bigint not null auto_increment,
+   plan_name            varchar(50),
+   date                 date,
+   memo                 varchar(255),
+   status_id            bigint,
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (sale_plan_id)
+);
+
+/*==============================================================*/
+/* Table: sale_plan_dtl                                         */
+/*==============================================================*/
+create table sale_plan_dtl
+(
+   sale_plan_dtl_id     bigint not null auto_increment,
+   sale_plan_id         bigint,
+   facility_id_from     bigint,
+   facility_id_to       bigint,
+   to_sequence_id       int,
+   product_id           bigint,
+   num                  decimal(13,2),
+   uom_id               bigint,
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (sale_plan_dtl_id)
+);
+
+/*==============================================================*/
+/* Table: ship_car                                              */
+/*==============================================================*/
+create table ship_car
+(
+   ship_car_id          bigint not null auto_increment,
+   car_card_id          varchar(30),
+   ��ϵ������                varchar(30),
+   ��ϵ�绰                 varchar(20),
+   ����                   varchar(30),
+   ����                   varchar(30),
+   primary key (ship_car_id)
+);
+
+/*==============================================================*/
+/* Table: shipment                                              */
+/*==============================================================*/
+create table shipment
+(
+   shipment_id          bigint not null auto_increment,
+   sale_plan_id         bigint,
+   facility_transition_id bigint,
+   ship_car_id          bigint,
+   facility_id_from     bigint,
+   facility_id_to       bigint,
+   product_id           bigint,
+   num                  decimal(13,2),
+   uom_id               bigint,
+   ship_date            date,
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (shipment_id)
+);
+
+/*==============================================================*/
+/* Table: status_item                                           */
+/*==============================================================*/
+create table status_item
+(
+   status_id            bigint not null auto_increment,
+   status_type_id       bigint,
+   status_code          varchar(20),
+   sequence_id          int,
+   description          varchar(30),
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (status_id)
+);
+
+/*==============================================================*/
+/* Table: status_type                                           */
+/*==============================================================*/
+create table status_type
+(
+   status_type_id       bigint not null auto_increment,
+   parent_id            bigint,
+   has_table            int,
+   description          varchar(30),
+   sequence_id          int,
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (status_type_id)
+);
+
+/*==============================================================*/
+/* Table: status_valid_change                                   */
+/*==============================================================*/
+create table status_valid_change
+(
+   svc_id               bigint not null auto_increment,
+   status_id_from       bigint,
+   status_id_to         bigint,
+   condition_expression varchar(30),
+   transition_name      varchar(30),
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (svc_id)
+);
+
+/*==============================================================*/
+/* Table: uom                                                   */
+/*==============================================================*/
+create table uom
+(
+   uom_id               bigint not null auto_increment,
+   uom_type_id          bigint,
+   abbreviation         varchar(20),
+   description          varchar(100),
+   sequence_id          int,
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (uom_id)
+);
+
+/*==============================================================*/
+/* Table: uom_conversion                                        */
+/*==============================================================*/
+create table uom_conversion
+(
+   uom_conversion_id    bigint not null auto_increment,
+   uom_id_from          bigint,
+   uom_id_to            bigint,
+   conversion_factor    double,
+   rounding_mode        varchar(20),
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (uom_conversion_id)
+);
+
+/*==============================================================*/
+/* Table: uom_type                                              */
+/*==============================================================*/
+create table uom_type
+(
+   uom_type_id          bigint not null auto_increment,
+   parent_id            bigint,
+   has_table            int,
+   description          varchar(255),
+   created_time         datetime,
+   last_updated_time    datetime,
+   created_by_user      bigint,
+   last_updated_by_user bigint,
+   primary key (uom_type_id)
+);
+
+alter table enumeration add constraint FK_jr8 foreign key (enum_type_id)
+      references enumeration_type (enum_type_id) on delete restrict on update restrict;
+
+alter table facility_transition add constraint FK_jr11 foreign key (facility_id)
+      references facility (facility_id) on delete restrict on update restrict;
+
+alter table party_group add constraint FK_jr3 foreign key (party_id)
+      references party (party_id) on delete restrict on update restrict;
+
+alter table party_relationship add constraint FK_jr9 foreign key (party_relationship_type_id)
+      references party_relationship_type (party_relationship_type_id) on delete restrict on update restrict;
+
+alter table party_role add constraint FK_jr4 foreign key (role_type_id)
+      references role_type (role_type_id) on delete restrict on update restrict;
+
+alter table party_role add constraint FK_jr6 foreign key (party_id)
+      references party (party_id) on delete restrict on update restrict;
+
+alter table party_user add constraint FK_jr5 foreign key (party_id)
+      references party (party_id) on delete restrict on update restrict;
+
+alter table person add constraint FK_jr7 foreign key (party_id)
+      references party (party_id) on delete restrict on update restrict;
+
+alter table price add constraint FK_jr10 foreign key (product_id)
+      references product (product_id) on delete restrict on update restrict;
+
+alter table sale_plan_dtl add constraint FK_jr14 foreign key (sale_plan_id)
+      references sale_plan (sale_plan_id) on delete restrict on update restrict;
+
+
+alter table shipment add constraint FK_jr13 foreign key (sale_plan_id)
+      references sale_plan (sale_plan_id) on delete restrict on update restrict;
+
+alter table shipment add constraint FK_jr15 foreign key (ship_car_id)
+      references ship_car (ship_car_id) on delete restrict on update restrict;
+
+alter table status_item add constraint FK_jr2 foreign key (status_type_id)
+      references status_type (status_type_id) on delete restrict on update restrict;
+
+alter table uom add constraint FK_jr1 foreign key (uom_type_id)
+      references uom_type (uom_type_id) on delete restrict on update restrict;
+
+      
+      
+      
+alter table enumeration drop foreign key FK_jr8;
+alter table facility_transition drop foreign key FK_jr11;
+alter table party_group drop foreign key FK_jr3;
+alter table party_relationship drop foreign key FK_jr9;
+alter table party_role drop foreign key FK_jr4;
+alter table party_role drop foreign key FK_jr6;
+alter table party_user drop foreign key FK_jr5;
+alter table person drop foreign key FK_jr7;
+alter table price drop foreign key FK_jr10;
+alter table sale_plan_dtl drop foreign key FK_jr14;
+alter table shipment drop foreign key FK_jr13;
+alter table shipment drop foreign key FK_jr15;
+alter table status_item drop foreign key FK_jr2;
+alter table uom drop foreign key FK_jr1;
+alter table village_info foreign key FK_jr16;
+
+
+INSERT INTO role (description,NAME) VALUES('党群管理员','ROLE_CP_ADMIN');
+INSERT INTO role (description,NAME) VALUES('党群操作员','ROLE_CP_USER');

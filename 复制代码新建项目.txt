@@ -1,0 +1,18 @@
+ԭ��Ŀ��wms----wms
+1������Դ���ļ��У�ճ��һ�ݣ�Ŀ¼������wms
+2��xedkĿ¼���桰.project���ļ����޸���Ŀ��name��<name>wms</name>--��<name>wms</name>
+3��pom.xml�޸ģ�
+    <groupId>com.joker.wms</groupId>
+    <artifactId>wms</artifactId>
+    <db.name>wms</db.name>
+   -->
+   <groupId>com.joker.wms</groupId>
+   <artifactId>wms</artifactId>
+   <db.name>wms</db.name>
+4�������µ���ݿ⣺wms
+5����ԭ�е���ݿ⣬���л���ݵı����ļ��ָ���xedk����ݿ���
+   mysql -uroot -psa wms<wms_version1.10.sql
+6����sts���� import---��Existing Maven Projects---��ѡ��λ��xedk����ĿĿ¼---��Finsh
+7�����뻷����ctrl+h�滻���к���wms�ĵط�
+
+

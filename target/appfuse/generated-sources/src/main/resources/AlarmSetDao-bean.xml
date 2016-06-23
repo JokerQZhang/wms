@@ -1,0 +1,5 @@
+<!--AlarmSetDao-START-->
+    <bean id="alarmSetDao" class="com.joker.wms.dao.hibernate.AlarmSetDaoHibernate"/>
+    <!--AlarmSetDao-END-->
+
+    <!-- Add new DAOs here -->

@@ -1,0 +1,97 @@
+1、http://www.appfuse.org/display/APF/AppFuse+QuickStart
+   GroupId：com.jokertest
+   ArtifactId：jokertest
+   Web Framework: Struts 2
+
+   生成代码：
+   mvn archetype:generate -B -DarchetypeGroupId=org.appfuse.archetypes -DarchetypeArtifactId=appfuse-basic-struts-archetype -DarchetypeVersion=3.5.0 -DgroupId=com.jokertest -DartifactId=jokertest -DarchetypeRepository=https://oss.sonatype.org/content/repositories/appfuse
+2、代码复制到cmd里面去执行---BUILD SUCCESS
+   自动生成项目目录：jokertest
+3、进入项目目录：cd jokertest
+   获取代码：
+   mvn appfuse:full-source
+   获取成功--BUILD SUCCESS
+4、配置数据库
+   进入pom.xml
+   properties配置里面添加
+   <jdbc.password>sa</jdbc.password>
+更多配置参数：
+<jdbc.groupId>mysql</jdbc.groupId>
+<jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
+<jdbc.version>5.1.27</jdbc.version>
+<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+<jdbc.url>
+    <![CDATA[jdbc:mysql://localhost/${db.name}?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true]]>
+</jdbc.url>
+<jdbc.username>root</jdbc.username>
+<jdbc.password/>
+<jdbc.validationQuery><![CDATA[SELECT 1 + 1]]></jdbc.validationQuery>
+5、创建数据库：create database
+   创建表，在生成代码前表不能添加外键限制之类的,也不能有复合主键，真尼玛奇葩,
+   好吧我认了，用着appfuse就得在主键上妥协，所有表必须跟个id，服了！
+   不然会报错，另外表主键为数字型，自增
+   解决方法： src/test/resources/appfuse/model/Ejb3PropertyGetAnnotation.ftl
+   复合主键不晓得如何解决
+6、appfuse插件
+   mvn appfuse:copy-templates 将模版拷贝以便修改
+   AppFuse Maven Plugin（AMP）
+   <amp.genericCore>false</amp.genericCore>
+   <amp.fullSource>true</amp.fullSource>
+   第一条是否生成dao和manager
+   第二条是否指向自己项目目录的genericdao和genericmanager
+   依据已存在的pojo生成CRUD代码
+   mvn appfuse:gen -Dentity=Name（Name是POJO的名称）
+   删除生成CRUD代码
+   mvn appfuse:remove -Dentity=Name
+7、自动从数据库里面生成POJO代码
+   mvn appfuse:gen-model
+   数据库表不能有外键，否则会报错，如果想用外键来建立pojo，appfuse会自动给你加上manytoone之类的配置，需要执行如下步骤
+   mvn appfuse:copy-templates
+   把appfuse的模版拷贝过来，然后在src/test/resources/appfuse/model/Ejb3PropertyGetAnnotation.ftl
+   文件中把：<#lt/>${pojo.generateJoinColumnsAnnotation(property, cfg)}
+   改成：<#lt/>${pojo.generateJoinColumnsAnnotation(property)}
+   另外还要修改 WEB-INF/pages/entityform.jsp文件中的：<form:select ...  itemLabel="label" itemValue="value" >
+8、默认情况下，appfuse会给你生成 GenericDao以及GenericManager文件，这些是appfuse中的基类文件，给你生成到项目中是方便你扩展
+   如果你不想生成，只需修改pom.xml中的<amp.genericCore>false</amp.genericCore>
+9、full-source命令所执行的内容是：
+   1.Exports all sources from Subversion into your project. It reads the dao.framework and web.framework properties to determine what you need.
+   2.Removes warpath plugin from pom.xml.
+   3.Calculates dependencies by reading pom.xml files form the various AppFuse modules. It replaces your dependencies with these new ones. The order of the dependencies added is alphabetical based on groupId.
+   4.Reads properties from the root AppFuse pom.xml and adds the ones that don't exist to your project.
+   5.Renames packages to match your project's groupId.
+10、使用自己的css框架，修改web.xml
+   <context-param>
+	<param-name>csstheme</param-name>
+	<param-value>simplicity</param-value>
+   </context-param>
+11、appfuse支持的数据库:Derby,H2,HSQLDB,MySQL,Oracle,PostgreSQL,SQL Server
+12、国际化配置中的Resource bundles
+   ApplicationResources: general AppFuse messages
+   displaytag: for displaytag's messages
+   errors: struts2 error messages
+13、maven命令
+mvn clean ---- Deletes all files in target directory or directories (for multi-module projects)
+mvn jetty:run-war ---- Packages and deploys your application to Jetty, reachable at http://localhost:8080
+mvn -Dcargo.wait=true ---- Packages and deploys your application to active Cargo profile (Tomcat 5.5.x by default), reachable at http://localhost:8080/yourapp-version
+mvn test ---- Runs all tests in src/test/java. Use "-Dtest=ClassName" (not fully-qualified) to run individual tests.
+				      Use -Dsurefire.useFile=false if you want to see test failures in your console (like Ant) and -Dmaven.surefire.debug if you want to open a debugger on port 5005 w/ suspend=y.
+mvn package ---- Creates a WAR or JAR depending on your project type
+mvn integration-test ---- Runs UI tests in Tomcat using Cargo
+mvn install ---- Installs generated artifacts in your local repository
+mvn site ---- Creates project site and reports
+mvn -U ---- Checks for updated plugins and downloads if they exist
+mvn -o ---- Work offline
+mvn --help ---- See full list of optional commands
+14、Security 配置文件：security.xml
+15、mvn package -Dmaven.test.skip=true
+    跳过测试的执行
+16、<plugin>
+       <groupId>org.codehaus.mojo</groupId>
+       <artifactId>dbunit-maven-plugin</artifactId>
+    </plugin>
+    删除这段，跳过dbunit的测试
+17、编译时生成的测试数据文件为：src\test\resources\sample-data.xml
+18、打开页面的时候你会很奇怪，default.jsp中没有引入js和css文件，为什么前台会有样式和js，那是因为使用了wro4j,web.xml里面作为filter配置的，具体的配置信息在：src\main\webapp\WEB-INF\wro.properties,和wro.xml中配置
+19、所谓urlrewrite是用来美化url的，功能的实质是将动态地址转化为伪静态的地址。和几乎所有的整合一样，首先现在web.xml里面添加过滤器之类的，然后在配置文件中配置url转化:src\main\webapp\WEB-INF\urlrewrite.xml
+20、网页结构使用的是sitemesh，类是freemaker，将文件弄个decorater：src\main\webapp\WEB-INF\sitemesh.xml
+21、程序发送邮件设置，mail.properties配置对你的host和默认发送邮件的帐号和密码，然后在applicationContext-service.xml中把mailSender下面注释掉的username、password等变成非注释的。

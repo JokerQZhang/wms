@@ -1,0 +1,7 @@
+<!--AlarmSetManager-START-->
+    <bean id="alarmSetManager" class="com.joker.wms.service.impl.AlarmSetManagerImpl">
+        <constructor-arg ref="alarmSetDao"/>
+    </bean>
+    <!--AlarmSetManager-END-->
+
+    <!-- Add new Managers here -->

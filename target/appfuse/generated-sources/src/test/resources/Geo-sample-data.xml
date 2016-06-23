@@ -1,0 +1,35 @@
+    <!--Geo-START-->
+    <table name="geo">
+        <column>geo_id</column>
+        <column>geo_name</column>
+        <column>geo_name_pinyin</column>
+        <column>geo_point</column>
+        <column>geo_type</column>
+        <column>parent_geo_id</column>
+    <row>
+        <value description="geo_id">-1</value>
+        <value description="geo_name">QvViGeOfYrEqQhIkDhPdEeFwCvJgKcSaCoSeNpIhMzJbUfPcPw</value>
+        <value description="geo_name_pinyin">ZxEcMvVrJrHsZdPgEsBaEzTbSlDmEkXdUfVjYuMlPqCfQjJsXc</value>
+        <value description="geo_point">PkXfZmWoKaXnTdTdIrBoAnClCuGeNmWaIpMxXiBlMeEzXtMdTj</value>
+        <value description="geo_type">LrQoEyGmXhLlTcMmCcIm</value>
+        <value description="parent_geo_id">4764129884135084032</value>
+    </row>
+    <row>
+        <value description="geo_id">-2</value>
+        <value description="geo_name">CqEsFuJbOkQvSlAwFyAzQiWiKvGbFtIbTkFpQyGkJpCcSbBsAp</value>
+        <value description="geo_name_pinyin">WoHfVgFtZcTiKxHoOyPiYkBvHbUyHoCaIrUaReHlMbCcTrRgTc</value>
+        <value description="geo_point">XlTaVyUtInFzFrGiQzVxVcLoNiDwZnNvMwZpYtKoXxNoWcPkDe</value>
+        <value description="geo_type">VaLtQaSiSkPaMkGzUqPt</value>
+        <value description="parent_geo_id">5239764975846881280</value>
+    </row>
+    <row>
+        <value description="geo_id">-3</value>
+        <value description="geo_name">LdPaSsCrTjNrQpEnFfIvKhDiTgCvOsGaFzPlNbOgVlZjIaAdOi</value>
+        <value description="geo_name_pinyin">SfIgYiHdMwYfOwIbTuFlZcNfRoNqFeZeMiIoWsTtDqYkRrVsIv</value>
+        <value description="geo_point">FxYuYuUxZmQhBdVvUpMxGdKbWrXaLkUsIaCtTtHbOjBpIhFqEj</value>
+        <value description="geo_type">FiQmXtDlZdZpWdGnCkRn</value>
+        <value description="parent_geo_id">1697095694843503616</value>
+    </row>
+    </table>
+    <!--Geo-END-->
+</dataset>

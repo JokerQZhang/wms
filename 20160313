@@ -1,0 +1,280 @@
+drop table if exists approval_proj;
+
+drop table if exists cp_dtl;
+
+drop table if exists cp_positive;
+
+drop table if exists tz_dhbz;
+
+drop table if exists tz_dyzth;
+
+drop table if exists tz_fwqz;
+
+drop table if exists tz_gfmz;
+
+drop table if exists tz_hjmd;
+
+drop table if exists tz_ztjj;
+
+/*==============================================================*/
+/* Table: approval_proj                                         */
+/*==============================================================*/
+create table approval_proj
+(
+   approval_proj_id     bigint not null auto_increment,
+   party_id             bigint,
+   proj_name            varchar(50),
+   proj_material        varchar(500),
+   proj_procedure       varchar(500),
+   time_limit           varchar(50),
+   charge_standard      varchar(50),
+   connect_person       varchar(50),
+   connect_phone        varchar(20),
+   place_name           varchar(50),
+   place_address        varchar(255),
+   traffic_way          varchar(255),
+   office_hour          varchar(255),
+   statis_id            bigint,
+   created_time         datetime,
+   created_by_user      bigint,
+   last_updated_time    datetime,
+   last_updated_by_user bigint,
+   primary key (approval_proj_id)
+);
+
+/*==============================================================*/
+/* Table: cp_dtl                                                */
+/*==============================================================*/
+create table cp_dtl
+(
+   cp_dtl_id            bigint not null auto_increment,
+   party_id             bigint,
+   status_id            bigint,
+   be_party_date        varchar(20),
+   positive_date        varchar(20),
+   be_party_zhibu       varchar(50),
+   be_here_date         varchar(20),
+   out_of_zhibu         varchar(50),
+   party_status         varchar(100),
+   occupation           varchar(100),
+   work_group           varchar(100),
+   work_status          varchar(100),
+   household_address    varchar(100),
+   flow_out_date        varchar(20),
+   flow_out_info        varchar(100),
+   is_have_flow_card    varchar(20),
+   flow_card_num        varchar(20),
+   flow_in_group        varchar(50),
+   flow_in_group_person varchar(50),
+   flow_in_group_phone  varchar(20),
+   party_group_type     varchar(20),
+   out_country_date     varchar(20),
+   out_country_reason   varchar(255),
+   out_country_connect  varchar(255),
+   out_country_dangji   varchar(20),
+   out_country_backdate varchar(20),
+   out_country_backlife varchar(255),
+   r_title1             varchar(20),
+   r_title2             varchar(20),
+   r_title3             varchar(20),
+   r_title4             varchar(20),
+   r_title5             varchar(20),
+   r_title6             varchar(20),
+   r_name1              varchar(20),
+   r_name2              varchar(20),
+   r_name3              varchar(20),
+   r_name4              varchar(20),
+   r_name5              varchar(20),
+   r_name6              varchar(20),
+   r_age1               varchar(20),
+   r_age2               varchar(20),
+   r_age3               varchar(20),
+   r_age4               varchar(20),
+   r_age5               varchar(20),
+   r_age6               varchar(20),
+   r_social1            varchar(20),
+   r_social2            varchar(20),
+   r_social3            varchar(20),
+   r_social4            varchar(20),
+   r_social5            varchar(20),
+   r_social6            varchar(20),
+   r_worke_company1     varchar(50),
+   r_worke_company2     varchar(50),
+   r_worke_company3     varchar(50),
+   r_worke_company4     varchar(50),
+   r_worke_company5     varchar(50),
+   r_worke_company6     varchar(50),
+   r_worke_satus1       varchar(50),
+   r_worke_satus2       varchar(50),
+   r_worke_satus3       varchar(50),
+   r_worke_satus4       varchar(50),
+   r_worke_satus5       varchar(50),
+   r_worke_satus6       varchar(50),
+   rdzys                varchar(10),
+   rdsqs                varchar(10),
+   zzsccl               varchar(10),
+   zzsqs                varchar(10),
+   pykccl               varchar(10),
+   other_cl             varchar(50),
+   keep_unit            varchar(50),
+   created_time         datetime,
+   created_by_user      bigint,
+   last_updated_time    datetime,
+   last_updated_by_user bigint,
+   primary key (cp_dtl_id)
+);
+
+/*==============================================================*/
+/* Table: cp_positive                                           */
+/*==============================================================*/
+create table cp_positive
+(
+   cp_positive_id       bigint not null auto_increment,
+   party_id             bigint,
+   first_apply_time     varchar(30),
+   be_positive_time     varchar(30),
+   con_people1          varchar(30),
+   con_people2          varchar(30),
+   fzdx_num             varchar(30),
+   fzdx_positive_num    varchar(30),
+   ybdy_num             varchar(30),
+   yndy_positive_num    varchar(30),
+   zsdy_num             varchar(30),
+   zsdy_positive_num    varchar(30),
+   created_time         datetime,
+   created_by_user      bigint,
+   last_updated_time    datetime,
+   last_updated_by_user bigint,
+   primary key (cp_positive_id)
+);
+
+/*==============================================================*/
+/* Table: tz_dhbz                                               */
+/*==============================================================*/
+create table tz_dhbz
+(
+   dhbz_id              bigint not null auto_increment,
+   tz_date              varchar(20),
+   group_party_id       bigint,
+   created_time         datetime,
+   created_by_user      bigint,
+   last_updated_time    datetime,
+   last_updated_by_user bigint,
+   zdzzsh_time          varchar(20),
+   zdzzhy_name          varchar(255),
+   hbgb_num             varchar(20),
+   bdfs                 varchar(255),
+   pyjjfz_num           varchar(20),
+   pyjjfz_name          varchar(255),
+   primary key (dhbz_id)
+);
+
+/*==============================================================*/
+/* Table: tz_dyzth                                              */
+/*==============================================================*/
+create table tz_dyzth
+(
+   dyzth_id             bigint not null auto_increment,
+   tz_date              varchar(20),
+   group_party_id       bigint,
+   created_time         datetime,
+   created_by_user      bigint,
+   last_updated_time    datetime,
+   last_updated_by_user bigint,
+   address              varchar(255),
+   content              varchar(2000),
+   primary key (dyzth_id)
+);
+
+/*==============================================================*/
+/* Table: tz_fwqz                                               */
+/*==============================================================*/
+create table tz_fwqz
+(
+   fwqz_id              bigint not null auto_increment,
+   tz_date              varchar(20),
+   group_party_id       bigint,
+   created_time         datetime,
+   created_by_user      bigint,
+   last_updated_time    datetime,
+   last_updated_by_user bigint,
+   jjsjkn_num           varchar(20),
+   jjsjkn_problem       varchar(255),
+   jsjcss_num           varchar(20),
+   jsjcss_dtl           varchar(255),
+   bmfuxx_is_show       varchar(20),
+   bmfuxx_show_type     varchar(255),
+   primary key (fwqz_id)
+);
+
+/*==============================================================*/
+/* Table: tz_gfmz                                               */
+/*==============================================================*/
+create table tz_gfmz
+(
+   gfmz_id              bigint not null auto_increment,
+   tz_date              varchar(20),
+   group_party_id       bigint,
+   created_time         datetime,
+   created_by_user      bigint,
+   last_updated_time    datetime,
+   last_updated_by_user bigint,
+   sylhgk_times         varchar(20),
+   sylhgk_dtl           varchar(255),
+   dyzhfwz_times        varchar(20),
+   dyzhfwz_dtl          varchar(255),
+   szgs_num             varchar(20),
+   szgs_time            varchar(20),
+   primary key (gfmz_id)
+);
+
+/*==============================================================*/
+/* Table: tz_hjmd                                               */
+/*==============================================================*/
+create table tz_hjmd
+(
+   hjmd_id              bigint not null auto_increment,
+   tz_date              varchar(20),
+   group_party_id       bigint,
+   created_time         datetime,
+   created_by_user      bigint,
+   last_updated_time    datetime,
+   last_updated_by_user bigint,
+   zfqz_times           varchar(20),
+   zfqz_person_num      varchar(20),
+   hjmdjf_num           varchar(20),
+   hjmdjf_dtl           varchar(255),
+   jjlsylwt_num         varchar(20),
+   jjlsylwt_dtl         varchar(255),
+   primary key (hjmd_id)
+);
+
+/*==============================================================*/
+/* Table: tz_ztjj                                               */
+/*==============================================================*/
+create table tz_ztjj
+(
+   ztjj_id              bigint not null auto_increment,
+   tz_date              varchar(20),
+   group_party_id       bigint,
+   created_time         datetime,
+   created_by_user      bigint,
+   last_updated_time    datetime,
+   last_updated_by_user bigint,
+   zdcjfzgh_name        varchar(50),
+   zdcjfzgh_status      varchar(255),
+   xtzjxm_type          varchar(255),
+   xtzjxm_purpose       varchar(255),
+   pyzfns_name          varchar(255),
+   pyzfns_skill         varchar(255),
+   primary key (ztjj_id)
+);
+
+alter table approval_proj add constraint FK_jr22 foreign key (party_id)
+      references party (party_id) on delete restrict on update restrict;
+
+alter table cp_dtl add constraint FK_jr23 foreign key (party_id)
+      references party (party_id) on delete restrict on update restrict;
+
+alter table cp_positive add constraint FK_jr24 foreign key (party_id)
+      references party (party_id) on delete restrict on update restrict;

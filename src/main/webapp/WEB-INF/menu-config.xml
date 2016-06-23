@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MenuConfig>
+    <Displayers>
+        <Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
+    </Displayers>
+    
+    <Menus>
+        <Menu name="Home" title="home.title" page="/home" roles="ROLE_ADMIN,ROLE_USER"/>
+        <Menu name="UserMenu" title="menu.user" description="User Menu" page="/editProfile" roles="ROLE_ADMIN,ROLE_USER"/>
+        <Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN,ROLE_CP_ADMIN">
+            <Item name="ViewUsers" title="menu.admin.users" page="/admin/users" roles="ROLE_ADMIN,ROLE_CP_ADMIN"/>
+            <Item name="ActiveUsers" title="home.activeUsers" page="/admin/activeUsers" roles="ROLE_ADMIN,ROLE_CP_ADMIN"/>
+            <Item name="ReloadContext" title="menu.admin.reload" page="/admin/reload" roles="ROLE_ADMIN,ROLE_CP_ADMIN"/>
+            <Item name="FileUpload" title="menu.selectFile" page="/selectFile" roles="ROLE_ADMIN"/>
+            <Item name="Enumeration" title="menu.enumeration" page="/admin/enumeration" roles="ROLE_ADMIN,ROLE_CP_ADMIN"/>
+            <Item name="Status" title="menu.status" page="/admin/status" roles="ROLE_ADMIN"/>
+            <Item name="RoleType" title="roleTypeList.title" page="/admin/roleTypes" roles="ROLE_ADMIN"/>
+            <Item name="PartyRelationshipTypeMenu" title="partyRelationshipTypeList.title" page="/admin/partyRelationshipTypes" roles="ROLE_ADMIN"/>
+            <Item name="Uom" title="uom.title" page="/admin/uom" roles="ROLE_ADMIN"/>
+            <Item name="Organization" title="organization.title" page="/admin/organization" roles="ROLE_ADMIN"/>
+            <Item name="GeoMenu" title="geoList.title" page="/admin/geoes" roles="ROLE_ADMIN"/>
+        </Menu>
+        <Menu name="MonitorMenu" title="menu.monitor" description="Admin Menu" roles="ROLE_ADMIN">
+        	<Item name="MonitorSite" title="menu.monitorsite" page="/admin/users" roles="ROLE_ADMIN"/>
+        	<Item name="SendNotify" title="menu.sendnotify" page="/admin/users" roles="ROLE_ADMIN"/>
+        	<Item name="AlarmSet" title="menu.alarmset" page="/wms/alarmSets" roles="ROLE_ADMIN"/>
+        	<Item name="MonitorData" title="menu.monitordata" page="/admin/users" roles="ROLE_ADMIN"/>
+        	<Item name="MonitorStastics" title="menu.monitorstastics" page="/admin/users" roles="ROLE_ADMIN"/>
+        </Menu>
+
+    </Menus>
+
+
+</MenuConfig>

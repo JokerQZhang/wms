@@ -1,0 +1,63 @@
+<!-- The following doctype doesn't work when offline, so default to old one, which does work.
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">-->
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <mapping class="com.joker.wms.model.User"/>
+        <mapping class="com.joker.wms.model.Role"/>
+    	
+    	<mapping class="com.joker.wms.model.Enumeration"/>
+		<mapping class="com.joker.wms.model.EnumerationType"/>
+		<mapping class="com.joker.wms.model.Facility"/>
+		<mapping class="com.joker.wms.model.FacilityTransition"/>
+		<mapping class="com.joker.wms.model.Party"/>
+		<mapping class="com.joker.wms.model.PartyGroup"/>
+		<mapping class="com.joker.wms.model.PartyRelationship"/>
+		<mapping class="com.joker.wms.model.PartyRelationshipType"/>
+		<mapping class="com.joker.wms.model.PartyRole"/>
+		<mapping class="com.joker.wms.model.PartyUser"/>
+		<mapping class="com.joker.wms.model.Person"/>
+		<mapping class="com.joker.wms.model.Product"/>
+		<mapping class="com.joker.wms.model.ReapDtl"/>
+		<mapping class="com.joker.wms.model.RoleType"/>
+		<mapping class="com.joker.wms.model.SalePlan"/>
+		<mapping class="com.joker.wms.model.SalePlanDtl"/>
+		<mapping class="com.joker.wms.model.Shipment"/>
+		<mapping class="com.joker.wms.model.StatusItem"/>
+		<mapping class="com.joker.wms.model.StatusType"/>
+		<mapping class="com.joker.wms.model.StatusValidChange"/>
+		<mapping class="com.joker.wms.model.Uom"/>
+		<mapping class="com.joker.wms.model.UomConversion"/>
+		<mapping class="com.joker.wms.model.UomType"/>
+		<mapping class="com.joker.wms.model.Price"/>
+		<mapping class="com.joker.wms.model.ShipCar"/>
+		<mapping class="com.joker.wms.model.VillageInfo"/>
+        <mapping class="com.joker.wms.model.TbCarePeople"/>
+        <mapping class="com.joker.wms.model.TbProvide"/>
+        <mapping class="com.joker.wms.model.TbPeopleCare"/>
+        <mapping class="com.joker.wms.model.TbProvideDtl"/>
+        <mapping class="com.joker.wms.model.ApprovalProj"/>
+        <mapping class="com.joker.wms.model.TzDhbz"/>
+        <mapping class="com.joker.wms.model.TzDyzth"/>
+        <mapping class="com.joker.wms.model.TzFwqz"/>
+        <mapping class="com.joker.wms.model.TzGfmz"/>
+        <mapping class="com.joker.wms.model.TzHjmd"/>
+        <mapping class="com.joker.wms.model.TzZtjj"/>
+        <mapping class="com.joker.wms.model.CpDtl"/>
+        <mapping class="com.joker.wms.model.CpPositive"/>
+        <mapping class="com.joker.wms.model.CpCharge"/>
+        <mapping class="com.joker.wms.model.Petition"/>
+        <mapping class="com.joker.wms.model.PetitionFlow"/>
+        <mapping class="com.joker.wms.model.TestQuestion"/>
+        <mapping class="com.joker.wms.model.TestPaper"/>
+        <mapping class="com.joker.wms.model.Answerer"/>
+        <mapping class="com.joker.wms.model.PaperQuestion"/>
+        <mapping class="com.joker.wms.model.QuestionOption"/>
+        <mapping class="com.joker.wms.model.Examination"/>
+        <mapping class="com.joker.wms.model.AlarmSet"/>
+        <mapping class="com.joker.wms.model.Geo"/>
+    </session-factory>
+</hibernate-configuration>

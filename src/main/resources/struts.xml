@@ -1,0 +1,1275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <!-- Constants -->
+    <constant name="struts.devMode" value="false"/>
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <constant name="struts.action.extension" value="action,"/>
+    <constant name="struts.objectFactory" value="spring"/>
+    <constant name="struts.custom.i18n.resources" value="ApplicationResources,errors"/>
+    <constant name="struts.multipart.maxSize" value="2097152"/>
+    <constant name="struts.ui.theme" value="css_xhtml"/>
+    <constant name="struts.codebehind.pathPrefix" value="/WEB-INF/pages/"/>
+    <constant name="struts.enable.SlashesInActionNames" value="true"/>
+    <constant name="struts.convention.action.disableScanning" value="true"/>
+    <constant name="struts.mapper.alwaysSelectFullNamespace" value="false"/>
+    <!-- Allow <s:submit> to call method names directly -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+
+    <!-- Configuration for the default package. -->
+    <package name="default" extends="struts-default">
+        <interceptors>
+            <!-- Interceptor to handle allowing only admins to certain actions -->
+            <interceptor name="adminOnly" class="adminInterceptor"/>
+            <!-- Interceptor to handle accessDenied exceptions thrown from service/model layer called from within actions -->
+            <interceptor name="accessDenied" class="accessDeniedInterceptor"/>
+            <!-- Copied from struts-default.xml and changed validation exclude methods -->
+            <interceptor-stack name="defaultStack">
+                <interceptor-ref name="accessDenied"/>
+                <interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="servletConfig"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="debugging"/>
+                <interceptor-ref name="profiling"/>
+                <interceptor-ref name="scopedModelDriven"/>
+                <interceptor-ref name="modelDriven"/>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="staticParams"/>
+                <interceptor-ref name="params">
+                    <param name="excludeParams">dojo\..*</param>
+                </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">cancel,execute,delete,edit,list</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+            </interceptor-stack>
+            <interceptor-stack name="fileUploadStack">
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+            <interceptor-stack name="adminCheck">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="adminOnly"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <global-results>
+            <result name="home" type="redirectAction">home</result>
+            <result name="dataAccessFailure">/WEB-INF/pages/dataAccessFailure.jsp</result>
+            <result name="jsonResult">/WEB-INF/pages/jsonResult.jsp</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="org.springframework.dao.DataAccessException" result="dataAccessFailure"/>
+        </global-exception-mappings>
+
+        <action name="home" class="userAction" method="homeProfile">
+            <result name="success">/WEB-INF/pages/home.jsp</result>
+        </action>
+
+        <action name="signup">
+            <result>/WEB-INF/pages/signup.jsp</result>
+        </action>
+		
+		<action name="pricesset" class="com.joker.wms.webapp.action.PriceAction" method="pricesetlist">
+            <result>/WEB-INF/pages/facility/pricesset.jsp</result>
+        </action>
+		
+        <action name="saveSignup" class="signupAction" method="save">
+            <result name="cancel" type="redirect">/</result>
+            <result name="input">/WEB-INF/pages/signup.jsp</result>
+            <result name="success" type="redirectAction">home</result>
+        </action>
+
+        <action name="editUser" class="userAction" method="edit">
+            <interceptor-ref name="adminCheck"/>
+            <result name="success">/WEB-INF/pages/userForm.jsp</result>
+            <result name="input">/WEB-INF/pages/admin/userList.jsp</result>
+        </action>
+
+        <action name="editProfile" class="userAction" method="edit">
+            <result name="success">/WEB-INF/pages/userForm.jsp</result>
+            <result name="error">/WEB-INF/pages/home.jsp</result>
+        </action>
+
+        <action name="saveUser" class="userAction" method="save">
+            <result name="cancel" type="redirectAction">admin/users</result>
+            <result name="input">/WEB-INF/pages/userForm.jsp</result>
+            <result name="success" type="redirectAction">admin/users</result>
+        </action>
+
+        <action name="selectFile" class="com.joker.wms.webapp.action.FileUploadAction">
+            <result name="success">/WEB-INF/pages/uploadForm.jsp</result>
+        </action>
+
+        <action name="uploadFile" class="com.joker.wms.webapp.action.FileUploadAction" method="upload">
+            <interceptor-ref name="fileUploadStack"/>
+            <result name="input">/WEB-INF/pages/uploadForm.jsp</result>
+            <result name="success">/WEB-INF/pages/uploadDisplay.jsp</result>
+            <result name="cancel" type="redirectAction">home</result>
+        </action>
+
+        <action name="passwordHint" class="passwordHintAction">
+            <result name="input">/</result>
+            <result name="success">/</result>
+        </action>
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        <!--EnumerationTypeAction-START-->
+        <action name="enumerationTypes" class="com.joker.wms.webapp.action.EnumerationTypeAction" method="list">
+            <result>/WEB-INF/pages/enumerationTypeList.jsp</result>
+        </action>
+
+        <action name="editEnumerationType" class="com.joker.wms.webapp.action.EnumerationTypeAction" method="edit">
+            <result>/WEB-INF/pages/enumerationTypeForm.jsp</result>
+            <result name="error">/WEB-INF/pages/enumerationTypeList.jsp</result>
+        </action>
+
+        <action name="saveEnumerationType" class="com.joker.wms.webapp.action.EnumerationTypeAction" method="save">
+            <result name="input">/WEB-INF/pages/enumerationTypeForm.jsp</result>
+            <result name="cancel" type="redirectAction">enumerationTypes</result>
+            <result name="delete" type="redirectAction">enumerationTypes</result>
+            <result name="success" type="redirectAction">enumerationTypes</result>
+        </action>
+        <!--EnumerationTypeAction-END-->
+
+        <!--EnumerationAction-START-->
+        <action name="enumerations" class="com.joker.wms.webapp.action.EnumerationAction" method="list">
+            <result>/WEB-INF/pages/enumerationList.jsp</result>
+        </action>
+
+        <action name="editEnumeration" class="com.joker.wms.webapp.action.EnumerationAction" method="edit">
+            <result>/WEB-INF/pages/enumerationForm.jsp</result>
+            <result name="error">/WEB-INF/pages/enumerationList.jsp</result>
+        </action>
+
+        <action name="saveEnumeration" class="com.joker.wms.webapp.action.EnumerationAction" method="save">
+            <result name="input">/WEB-INF/pages/enumerationForm.jsp</result>
+            <result name="cancel" type="redirectAction">enumerations</result>
+            <result name="delete" type="redirectAction">enumerations</result>
+            <result name="success" type="redirectAction">enumerations</result>
+        </action>
+        <!--EnumerationAction-END-->
+
+        <!--StatusTypeAction-START-->
+        <action name="statusTypes" class="com.joker.wms.webapp.action.StatusTypeAction" method="list">
+            <result>/WEB-INF/pages/statusTypeList.jsp</result>
+        </action>
+
+        <action name="editStatusType" class="com.joker.wms.webapp.action.StatusTypeAction" method="edit">
+            <result>/WEB-INF/pages/statusTypeForm.jsp</result>
+            <result name="error">/WEB-INF/pages/statusTypeList.jsp</result>
+        </action>
+
+        <action name="saveStatusType" class="com.joker.wms.webapp.action.StatusTypeAction" method="save">
+            <result name="input">/WEB-INF/pages/statusTypeForm.jsp</result>
+            <result name="cancel" type="redirectAction">statusTypes</result>
+            <result name="delete" type="redirectAction">statusTypes</result>
+            <result name="success" type="redirectAction">statusTypes</result>
+        </action>
+        
+        <!--StatusTypeAction-END-->
+
+        <!--StatusItemAction-START-->
+        <action name="statusItems" class="com.joker.wms.webapp.action.StatusItemAction" method="list">
+            <result>/WEB-INF/pages/statusItemList.jsp</result>
+        </action>
+
+        <action name="editStatusItem" class="com.joker.wms.webapp.action.StatusItemAction" method="edit">
+            <result>/WEB-INF/pages/statusItemForm.jsp</result>
+            <result name="error">/WEB-INF/pages/statusItemList.jsp</result>
+        </action>
+
+        <action name="saveStatusItem" class="com.joker.wms.webapp.action.StatusItemAction" method="save">
+            <result name="input">/WEB-INF/pages/statusItemForm.jsp</result>
+            <result name="cancel" type="redirectAction">statusItems</result>
+            <result name="delete" type="redirectAction">statusItems</result>
+            <result name="success" type="redirectAction">statusItems</result>
+        </action>
+        
+        <!--StatusItemAction-END-->
+
+        <!--StatusValidChangeAction-START-->
+        <action name="statusValidChanges" class="com.joker.wms.webapp.action.StatusValidChangeAction" method="list">
+            <result>/WEB-INF/pages/statusValidChangeList.jsp</result>
+        </action>
+
+        <action name="editStatusValidChange" class="com.joker.wms.webapp.action.StatusValidChangeAction" method="edit">
+            <result>/WEB-INF/pages/statusValidChangeForm.jsp</result>
+            <result name="error">/WEB-INF/pages/statusValidChangeList.jsp</result>
+        </action>
+
+        <action name="saveStatusValidChange" class="com.joker.wms.webapp.action.StatusValidChangeAction" method="save">
+            <result name="input">/WEB-INF/pages/statusValidChangeForm.jsp</result>
+            <result name="cancel" type="redirectAction">statusValidChanges</result>
+            <result name="delete" type="redirectAction">statusValidChanges</result>
+            <result name="success" type="redirectAction">statusValidChanges</result>
+        </action>
+        
+        <!--StatusValidChangeAction-END-->
+
+        <!--PartyRelationshipTypeAction-START-->
+        <action name="partyRelationshipTypes" class="com.joker.wms.webapp.action.PartyRelationshipTypeAction" method="list">
+            <result>/WEB-INF/pages/partyRelationshipTypeList.jsp</result>
+        </action>
+
+        <action name="editPartyRelationshipType" class="com.joker.wms.webapp.action.PartyRelationshipTypeAction" method="edit">
+            <result>/WEB-INF/pages/partyRelationshipTypeForm.jsp</result>
+            <result name="error">/WEB-INF/pages/partyRelationshipTypeList.jsp</result>
+        </action>
+
+        <action name="savePartyRelationshipType" class="com.joker.wms.webapp.action.PartyRelationshipTypeAction" method="save">
+            <result name="input">/WEB-INF/pages/partyRelationshipTypeForm.jsp</result>
+            <result name="cancel" type="redirectAction">partyRelationshipTypes</result>
+            <result name="delete" type="redirectAction">partyRelationshipTypes</result>
+            <result name="success" type="redirectAction">partyRelationshipTypes</result>
+        </action>
+        
+        <!--PartyRelationshipTypeAction-END-->
+
+        <!--PartyRelationshipAction-START-->
+        <action name="partyRelationships" class="com.joker.wms.webapp.action.PartyRelationshipAction" method="list">
+            <result>/WEB-INF/pages/partyRelationshipList.jsp</result>
+        </action>
+
+        <action name="editPartyRelationship" class="com.joker.wms.webapp.action.PartyRelationshipAction" method="edit">
+            <result>/WEB-INF/pages/partyRelationshipForm.jsp</result>
+            <result name="error">/WEB-INF/pages/partyRelationshipList.jsp</result>
+        </action>
+
+        <action name="savePartyRelationship" class="com.joker.wms.webapp.action.PartyRelationshipAction" method="save">
+            <result name="input">/WEB-INF/pages/partyRelationshipForm.jsp</result>
+            <result name="cancel" type="redirectAction">partyRelationships</result>
+            <result name="delete" type="redirectAction">partyRelationships</result>
+            <result name="success" type="redirectAction">partyRelationships</result>
+        </action>
+        
+        <!--PartyRelationshipAction-END-->
+
+        <!--UomTypeAction-START-->
+        <action name="uomTypes" class="com.joker.wms.webapp.action.UomTypeAction" method="list">
+            <result>/WEB-INF/pages/uomTypeList.jsp</result>
+        </action>
+
+        <action name="editUomType" class="com.joker.wms.webapp.action.UomTypeAction" method="edit">
+            <result>/WEB-INF/pages/uomTypeForm.jsp</result>
+            <result name="error">/WEB-INF/pages/uomTypeList.jsp</result>
+        </action>
+
+        <action name="saveUomType" class="com.joker.wms.webapp.action.UomTypeAction" method="save">
+            <result name="input">/WEB-INF/pages/uomTypeForm.jsp</result>
+            <result name="cancel" type="redirectAction">uomTypes</result>
+            <result name="delete" type="redirectAction">uomTypes</result>
+            <result name="success" type="redirectAction">uomTypes</result>
+        </action>
+        
+        <!--UomTypeAction-END-->
+
+        <!--UomAction-START-->
+        <action name="uoms" class="com.joker.wms.webapp.action.UomAction" method="list">
+            <result>/WEB-INF/pages/uomList.jsp</result>
+        </action>
+
+        <action name="editUom" class="com.joker.wms.webapp.action.UomAction" method="edit">
+            <result>/WEB-INF/pages/uomForm.jsp</result>
+            <result name="error">/WEB-INF/pages/uomList.jsp</result>
+        </action>
+
+        <action name="saveUom" class="com.joker.wms.webapp.action.UomAction" method="save">
+            <result name="input">/WEB-INF/pages/uomForm.jsp</result>
+            <result name="cancel" type="redirectAction">uoms</result>
+            <result name="delete" type="redirectAction">uoms</result>
+            <result name="success" type="redirectAction">uoms</result>
+        </action>
+        
+        <!--UomAction-END-->
+
+        <!--UomConversionAction-START-->
+        <action name="uomConversions" class="com.joker.wms.webapp.action.UomConversionAction" method="list">
+            <result>/WEB-INF/pages/uomConversionList.jsp</result>
+        </action>
+
+        <action name="editUomConversion" class="com.joker.wms.webapp.action.UomConversionAction" method="edit">
+            <result>/WEB-INF/pages/uomConversionForm.jsp</result>
+            <result name="error">/WEB-INF/pages/uomConversionList.jsp</result>
+        </action>
+
+        <action name="saveUomConversion" class="com.joker.wms.webapp.action.UomConversionAction" method="save">
+            <result name="input">/WEB-INF/pages/uomConversionForm.jsp</result>
+            <result name="cancel" type="redirectAction">uomConversions</result>
+            <result name="delete" type="redirectAction">uomConversions</result>
+            <result name="success" type="redirectAction">uomConversions</result>
+        </action>
+        
+        <!--UomConversionAction-END-->
+
+        <!--RoleTypeAction-START-->
+        <action name="roleTypes" class="com.joker.wms.webapp.action.RoleTypeAction" method="list">
+            <result>/WEB-INF/pages/roleTypeList.jsp</result>
+        </action>
+
+        <action name="editRoleType" class="com.joker.wms.webapp.action.RoleTypeAction" method="edit">
+            <result>/WEB-INF/pages/roleTypeForm.jsp</result>
+            <result name="error">/WEB-INF/pages/roleTypeList.jsp</result>
+        </action>
+
+        <action name="saveRoleType" class="com.joker.wms.webapp.action.RoleTypeAction" method="save">
+            <result name="input">/WEB-INF/pages/roleTypeForm.jsp</result>
+            <result name="cancel" type="redirectAction">roleTypes</result>
+            <result name="delete" type="redirectAction">roleTypes</result>
+            <result name="success" type="redirectAction">roleTypes</result>
+        </action>
+        
+        <!--RoleTypeAction-END-->
+
+        <!--PartyGroupAction-START-->
+        <action name="partyGroups" class="com.joker.wms.webapp.action.PartyGroupAction" method="list">
+            <result>/WEB-INF/pages/partyGroupList.jsp</result>
+        </action>
+        <action name="partyGroupCustoms" class="com.joker.wms.webapp.action.PartyGroupAction" method="partyGroupCustoms">
+            <result>/WEB-INF/pages/partyGroupCustomList.jsp</result>
+        </action>
+
+        <action name="editPartyGroup" class="com.joker.wms.webapp.action.PartyGroupAction" method="edit">
+            <result>/WEB-INF/pages/partyGroupForm.jsp</result>
+            <result name="error">/WEB-INF/pages/partyGroupList.jsp</result>
+        </action>
+
+        <action name="savePartyGroup" class="com.joker.wms.webapp.action.PartyGroupAction" method="save">
+            <result name="input">/WEB-INF/pages/partyGroupForm.jsp</result>
+            <result name="cancel" type="redirectAction">partyGroups</result>
+            <result name="delete" type="redirectAction">partyGroups</result>
+            <result name="success" type="redirectAction">partyGroups</result>
+        </action>
+
+        <!--PartyGroupAction-END-->
+
+        <!--PersonAction-START-->
+        <action name="persons" class="com.joker.wms.webapp.action.PersonAction" method="list">
+            <result>/WEB-INF/pages/personList.jsp</result>
+        </action>
+
+        <action name="editPerson" class="com.joker.wms.webapp.action.PersonAction" method="edit">
+            <result>/WEB-INF/pages/personForm.jsp</result>
+            <result name="error">/WEB-INF/pages/personList.jsp</result>
+        </action>
+
+        <action name="savePerson" class="com.joker.wms.webapp.action.PersonAction" method="save">
+            <result name="input">/WEB-INF/pages/personForm.jsp</result>
+            <result name="cancel" type="redirectAction">persons</result>
+            <result name="delete" type="redirectAction">persons</result>
+            <result name="success" type="redirectAction">persons</result>
+        </action>
+        
+        <!--PersonAction-END-->
+
+        <!--FacilityAction-START-->
+        <action name="facilities" class="com.joker.wms.webapp.action.FacilityAction" method="list">
+            <result>/WEB-INF/pages/facilityList.jsp</result>
+        </action>
+
+        <action name="editFacility" class="com.joker.wms.webapp.action.FacilityAction" method="edit">
+            <result>/WEB-INF/pages/facilityForm.jsp</result>
+            <result name="error">/WEB-INF/pages/facilityList.jsp</result>
+        </action>
+
+        <action name="saveFacility" class="com.joker.wms.webapp.action.FacilityAction" method="save">
+            <result name="input">/WEB-INF/pages/facilityForm.jsp</result>
+            <result name="cancel" type="redirectAction">facilities</result>
+            <result name="delete" type="redirectAction">facilities</result>
+            <result name="success" type="redirectAction">facilities</result>
+        </action>
+        <!--FacilityAction-END-->
+
+        <!--ProductAction-START-->
+        <action name="products" class="com.joker.wms.webapp.action.ProductAction" method="list">
+            <result>/WEB-INF/pages/productList.jsp</result>
+        </action>
+
+        <action name="editProduct" class="com.joker.wms.webapp.action.ProductAction" method="edit">
+            <result>/WEB-INF/pages/productForm.jsp</result>
+            <result name="error">/WEB-INF/pages/productList.jsp</result>
+        </action>
+
+        <action name="saveProduct" class="com.joker.wms.webapp.action.ProductAction" method="save">
+            <result name="input">/WEB-INF/pages/productForm.jsp</result>
+            <result name="cancel" type="redirectAction">products</result>
+            <result name="delete" type="redirectAction">products</result>
+            <result name="success" type="redirectAction">products</result>
+        </action>
+        
+        <!--ProductAction-END-->
+
+        <!--PriceAction-START-->
+        <action name="prices" class="com.joker.wms.webapp.action.PriceAction" method="list">
+            <result>/WEB-INF/pages/priceList.jsp</result>
+        </action>
+
+        <action name="editPrice" class="com.joker.wms.webapp.action.PriceAction" method="edit">
+            <result>/WEB-INF/pages/priceForm.jsp</result>
+            <result name="error">/WEB-INF/pages/priceList.jsp</result>
+        </action>
+
+        <action name="savePrice" class="com.joker.wms.webapp.action.PriceAction" method="save">
+            <result name="input">/WEB-INF/pages/priceForm.jsp</result>
+            <result name="cancel" type="redirectAction">prices</result>
+            <result name="delete" type="redirectAction">prices</result>
+            <result name="success" type="redirectAction">prices</result>
+        </action>
+        <!--PriceAction-END-->
+
+        <!--ShipCarAction-START-->
+        <action name="shipCars" class="com.joker.wms.webapp.action.ShipCarAction" method="list">
+            <result>/WEB-INF/pages/shipCarList.jsp</result>
+        </action>
+
+        <action name="editShipCar" class="com.joker.wms.webapp.action.ShipCarAction" method="edit">
+            <result>/WEB-INF/pages/shipCarForm.jsp</result>
+            <result name="error">/WEB-INF/pages/shipCarList.jsp</result>
+        </action>
+
+        <action name="saveShipCar" class="com.joker.wms.webapp.action.ShipCarAction" method="save">
+            <result name="input">/WEB-INF/pages/shipCarForm.jsp</result>
+            <result name="cancel" type="redirectAction">shipCars</result>
+            <result name="delete" type="redirectAction">shipCars</result>
+            <result name="success" type="redirectAction">shipCars</result>
+        </action>
+        <!--ShipCarAction-END-->
+
+        <!--SalePlanAction-START-->
+        <action name="salePlans" class="com.joker.wms.webapp.action.SalePlanAction" method="list">
+            <result>/WEB-INF/pages/salePlanList.jsp</result>
+        </action>
+
+        <action name="editSalePlan" class="com.joker.wms.webapp.action.SalePlanAction" method="edit">
+            <result>/WEB-INF/pages/salePlanForm.jsp</result>
+            <result name="error">/WEB-INF/pages/salePlanList.jsp</result>
+        </action>
+
+        <action name="saveSalePlan" class="com.joker.wms.webapp.action.SalePlanAction" method="save">
+            <result name="input">/WEB-INF/pages/salePlanForm.jsp</result>
+            <result name="cancel" type="redirectAction">salePlans</result>
+            <result name="delete" type="redirectAction">salePlans</result>
+            <result name="success" type="redirectAction">salePlans</result>
+        </action>
+        <action name="invertorys" class="com.joker.wms.webapp.action.SalePlanAction" method="invertorys">
+            <result>/WEB-INF/pages/invetoryList.jsp</result>
+        </action>
+        <!--SalePlanAction-END-->
+
+        <!--SalePlanDtlAction-START-->
+        <action name="salePlanDtls" class="com.joker.wms.webapp.action.SalePlanDtlAction" method="list">
+            <result>/WEB-INF/pages/salePlanDtlList.jsp</result>
+        </action>
+
+        <action name="editSalePlanDtl" class="com.joker.wms.webapp.action.SalePlanDtlAction" method="edit">
+            <result>/WEB-INF/pages/salePlanDtlForm.jsp</result>
+            <result name="error">/WEB-INF/pages/salePlanDtlList.jsp</result>
+        </action>
+
+        <action name="saveSalePlanDtl" class="com.joker.wms.webapp.action.SalePlanDtlAction" method="save">
+            <result name="input">/WEB-INF/pages/salePlanDtlForm.jsp</result>
+            <result name="cancel" type="redirectAction">salePlanDtls</result>
+            <result name="delete" type="redirectAction">salePlanDtls</result>
+            <result name="success" type="redirectAction">salePlanDtls</result>
+        </action>
+        
+        <!--SalePlanDtlAction-END-->
+
+        <!--ShipmentAction-START-->
+        <action name="shipments" class="com.joker.wms.webapp.action.ShipmentAction" method="list">
+            <result>/WEB-INF/pages/shipmentList.jsp</result>
+        </action>
+
+        <action name="editShipment" class="com.joker.wms.webapp.action.ShipmentAction" method="edit">
+            <result>/WEB-INF/pages/shipmentForm.jsp</result>
+            <result name="error">/WEB-INF/pages/shipmentList.jsp</result>
+        </action>
+
+        <action name="saveShipment" class="com.joker.wms.webapp.action.ShipmentAction" method="save">
+            <result name="input">/WEB-INF/pages/shipmentForm.jsp</result>
+            <result name="cancel" type="redirectAction">shipments</result>
+            <result name="delete" type="redirectAction">shipments</result>
+            <result name="success" type="redirectAction">shipments</result>
+        </action>
+        
+        <!--ShipmentAction-END-->
+
+        <!--FacilityTransitionAction-START-->
+        <action name="facilityTransitions" class="com.joker.wms.webapp.action.FacilityTransitionAction" method="list">
+            <result>/WEB-INF/pages/facilityTransitionList.jsp</result>
+        </action>
+
+        <action name="editFacilityTransition" class="com.joker.wms.webapp.action.FacilityTransitionAction" method="edit">
+            <result>/WEB-INF/pages/facilityTransitionForm.jsp</result>
+            <result name="error">/WEB-INF/pages/facilityTransitionList.jsp</result>
+        </action>
+
+        <action name="saveFacilityTransition" class="com.joker.wms.webapp.action.FacilityTransitionAction" method="save">
+            <result name="input">/WEB-INF/pages/facilityTransitionForm.jsp</result>
+            <result name="cancel" type="redirectAction">facilityTransitions</result>
+            <result name="delete" type="redirectAction">facilityTransitions</result>
+            <result name="success" type="redirectAction">facilityTransitions</result>
+        </action>
+        
+        <!--FacilityTransitionAction-END-->
+
+        <!--TbCarePeopleAction-START-->
+        <action name="tbCarePeoples" class="com.joker.wms.webapp.action.TbCarePeopleAction" method="list">
+            <result>/WEB-INF/pages/tbCarePeopleList.jsp</result>
+        </action>
+
+        <action name="editTbCarePeople" class="com.joker.wms.webapp.action.TbCarePeopleAction" method="edit">
+            <result>/WEB-INF/pages/tbCarePeopleForm.jsp</result>
+            <result name="error">/WEB-INF/pages/tbCarePeopleList.jsp</result>
+        </action>
+
+        <action name="saveTbCarePeople" class="com.joker.wms.webapp.action.TbCarePeopleAction" method="save">
+            <result name="input">/WEB-INF/pages/tbCarePeopleForm.jsp</result>
+            <result name="cancel" type="redirectAction">tbCarePeoples</result>
+            <result name="delete" type="redirectAction">tbCarePeoples</result>
+            <result name="success" type="redirectAction">tbCarePeoples</result>
+        </action>
+        <!--TbCarePeopleAction-END-->
+
+        <!--TbProvideAction-START-->
+        <action name="tbProvides" class="com.joker.wms.webapp.action.TbProvideAction" method="list">
+            <result>/WEB-INF/pages/tbProvideList.jsp</result>
+        </action>
+
+        <action name="editTbProvide" class="com.joker.wms.webapp.action.TbProvideAction" method="edit">
+            <result>/WEB-INF/pages/tbProvideForm.jsp</result>
+            <result name="error">/WEB-INF/pages/tbProvideList.jsp</result>
+        </action>
+
+        <action name="saveTbProvide" class="com.joker.wms.webapp.action.TbProvideAction" method="save">
+            <result name="input">/WEB-INF/pages/tbProvideForm.jsp</result>
+            <result name="cancel" type="redirectAction">tbProvides</result>
+            <result name="delete" type="redirectAction">tbProvides</result>
+            <result name="success" type="redirectAction">tbProvides</result>
+        </action>
+        <!--TbProvideAction-END-->
+
+        <!--TbProvideDtlAction-START-->
+        <action name="tbProvideDtls" class="com.joker.wms.webapp.action.TbProvideDtlAction" method="list">
+            <result>/WEB-INF/pages/tbProvideDtlList.jsp</result>
+        </action>
+
+        <action name="editTbProvideDtl" class="com.joker.wms.webapp.action.TbProvideDtlAction" method="edit">
+            <result>/WEB-INF/pages/tbProvideDtlForm.jsp</result>
+            <result name="error">/WEB-INF/pages/tbProvideDtlList.jsp</result>
+        </action>
+
+        <action name="saveTbProvideDtl" class="com.joker.wms.webapp.action.TbProvideDtlAction" method="save">
+            <result name="input">/WEB-INF/pages/tbProvideDtlForm.jsp</result>
+            <result name="cancel" type="redirectAction">tbProvideDtls</result>
+            <result name="delete" type="redirectAction">tbProvideDtls</result>
+            <result name="success" type="redirectAction">tbProvideDtls</result>
+        </action>
+        <!--
+        <action name="tbProvideDtls">
+            <result>/WEB-INF/pages/tbProvideDtlList.jsp</result>
+        </action>
+        -->
+        <!--TbProvideDtlAction-END-->
+
+        
+
+        <!--ApprovalProjAction-START-->
+        <action name="approvalProjs" class="com.joker.wms.webapp.action.ApprovalProjAction" method="list">
+            <result>/WEB-INF/pages/approvalProjList.jsp</result>
+        </action>
+
+        <action name="editApprovalProj" class="com.joker.wms.webapp.action.ApprovalProjAction" method="edit">
+            <result>/WEB-INF/pages/approvalProjForm.jsp</result>
+            <result name="error">/WEB-INF/pages/approvalProjList.jsp</result>
+        </action>
+
+        <action name="saveApprovalProj" class="com.joker.wms.webapp.action.ApprovalProjAction" method="save">
+            <result name="input">/WEB-INF/pages/approvalProjForm.jsp</result>
+            <result name="cancel" type="redirectAction">approvalProjs</result>
+            <result name="delete" type="redirectAction">approvalProjs</result>
+            <result name="success" type="redirectAction">approvalProjs</result>
+        </action>
+        <!--
+        <action name="approvalProjs">
+            <result>/WEB-INF/pages/approvalProjList.jsp</result>
+        </action>
+        -->
+        <!--ApprovalProjAction-END-->
+
+        <!--TzDhbzAction-START-->
+        <action name="tzDhbzs" class="com.joker.wms.webapp.action.TzDhbzAction" method="list">
+            <result>/WEB-INF/pages/tzDhbzList.jsp</result>
+        </action>
+
+        <action name="editTzDhbz" class="com.joker.wms.webapp.action.TzDhbzAction" method="edit">
+            <result>/WEB-INF/pages/tzDhbzForm.jsp</result>
+            <result name="error">/WEB-INF/pages/tzDhbzList.jsp</result>
+        </action>
+
+        <action name="saveTzDhbz" class="com.joker.wms.webapp.action.TzDhbzAction" method="save">
+            <result name="input">/WEB-INF/pages/tzDhbzForm.jsp</result>
+            <result name="cancel" type="redirectAction">tzDhbzs</result>
+            <result name="delete" type="redirectAction">tzDhbzs</result>
+            <result name="success" type="redirectAction">tzDhbzs</result>
+        </action>
+        <!--
+        <action name="tzDhbzs">
+            <result>/WEB-INF/pages/tzDhbzList.jsp</result>
+        </action>
+        -->
+        <!--TzDhbzAction-END-->
+
+        <!--TzDyzthAction-START-->
+        <action name="tzDyzths" class="com.joker.wms.webapp.action.TzDyzthAction" method="list">
+            <result>/WEB-INF/pages/tzDyzthList.jsp</result>
+        </action>
+
+        <action name="editTzDyzth" class="com.joker.wms.webapp.action.TzDyzthAction" method="edit">
+            <result>/WEB-INF/pages/tzDyzthForm.jsp</result>
+            <result name="error">/WEB-INF/pages/tzDyzthList.jsp</result>
+        </action>
+
+        <action name="saveTzDyzth" class="com.joker.wms.webapp.action.TzDyzthAction" method="save">
+            <result name="input">/WEB-INF/pages/tzDyzthForm.jsp</result>
+            <result name="cancel" type="redirectAction">tzDyzths</result>
+            <result name="delete" type="redirectAction">tzDyzths</result>
+            <result name="success" type="redirectAction">tzDyzths</result>
+        </action>
+        <!--
+        <action name="tzDyzths">
+            <result>/WEB-INF/pages/tzDyzthList.jsp</result>
+        </action>
+        -->
+        <!--TzDyzthAction-END-->
+
+        <!--TzFwqzAction-START-->
+        <action name="tzFwqzs" class="com.joker.wms.webapp.action.TzFwqzAction" method="list">
+            <result>/WEB-INF/pages/tzFwqzList.jsp</result>
+        </action>
+
+        <action name="editTzFwqz" class="com.joker.wms.webapp.action.TzFwqzAction" method="edit">
+            <result>/WEB-INF/pages/tzFwqzForm.jsp</result>
+            <result name="error">/WEB-INF/pages/tzFwqzList.jsp</result>
+        </action>
+
+        <action name="saveTzFwqz" class="com.joker.wms.webapp.action.TzFwqzAction" method="save">
+            <result name="input">/WEB-INF/pages/tzFwqzForm.jsp</result>
+            <result name="cancel" type="redirectAction">tzFwqzs</result>
+            <result name="delete" type="redirectAction">tzFwqzs</result>
+            <result name="success" type="redirectAction">tzFwqzs</result>
+        </action>
+        <!--
+        <action name="tzFwqzs">
+            <result>/WEB-INF/pages/tzFwqzList.jsp</result>
+        </action>
+        -->
+        <!--TzFwqzAction-END-->
+
+        <!--TzGfmzAction-START-->
+        <action name="tzGfmzs" class="com.joker.wms.webapp.action.TzGfmzAction" method="list">
+            <result>/WEB-INF/pages/tzGfmzList.jsp</result>
+        </action>
+
+        <action name="editTzGfmz" class="com.joker.wms.webapp.action.TzGfmzAction" method="edit">
+            <result>/WEB-INF/pages/tzGfmzForm.jsp</result>
+            <result name="error">/WEB-INF/pages/tzGfmzList.jsp</result>
+        </action>
+
+        <action name="saveTzGfmz" class="com.joker.wms.webapp.action.TzGfmzAction" method="save">
+            <result name="input">/WEB-INF/pages/tzGfmzForm.jsp</result>
+            <result name="cancel" type="redirectAction">tzGfmzs</result>
+            <result name="delete" type="redirectAction">tzGfmzs</result>
+            <result name="success" type="redirectAction">tzGfmzs</result>
+        </action>
+        <!--
+        <action name="tzGfmzs">
+            <result>/WEB-INF/pages/tzGfmzList.jsp</result>
+        </action>
+        -->
+        <!--TzGfmzAction-END-->
+
+        <!--TzHjmdAction-START-->
+        <action name="tzHjmds" class="com.joker.wms.webapp.action.TzHjmdAction" method="list">
+            <result>/WEB-INF/pages/tzHjmdList.jsp</result>
+        </action>
+
+        <action name="editTzHjmd" class="com.joker.wms.webapp.action.TzHjmdAction" method="edit">
+            <result>/WEB-INF/pages/tzHjmdForm.jsp</result>
+            <result name="error">/WEB-INF/pages/tzHjmdList.jsp</result>
+        </action>
+
+        <action name="saveTzHjmd" class="com.joker.wms.webapp.action.TzHjmdAction" method="save">
+            <result name="input">/WEB-INF/pages/tzHjmdForm.jsp</result>
+            <result name="cancel" type="redirectAction">tzHjmds</result>
+            <result name="delete" type="redirectAction">tzHjmds</result>
+            <result name="success" type="redirectAction">tzHjmds</result>
+        </action>
+        <!--
+        <action name="tzHjmds">
+            <result>/WEB-INF/pages/tzHjmdList.jsp</result>
+        </action>
+        -->
+        <!--TzHjmdAction-END-->
+
+        <!--TzZtjjAction-START-->
+        <action name="tzZtjjs" class="com.joker.wms.webapp.action.TzZtjjAction" method="list">
+            <result>/WEB-INF/pages/tzZtjjList.jsp</result>
+        </action>
+
+        <action name="editTzZtjj" class="com.joker.wms.webapp.action.TzZtjjAction" method="edit">
+            <result>/WEB-INF/pages/tzZtjjForm.jsp</result>
+            <result name="error">/WEB-INF/pages/tzZtjjList.jsp</result>
+        </action>
+
+        <action name="saveTzZtjj" class="com.joker.wms.webapp.action.TzZtjjAction" method="save">
+            <result name="input">/WEB-INF/pages/tzZtjjForm.jsp</result>
+            <result name="cancel" type="redirectAction">tzZtjjs</result>
+            <result name="delete" type="redirectAction">tzZtjjs</result>
+            <result name="success" type="redirectAction">tzZtjjs</result>
+        </action>
+        <!--
+        <action name="tzZtjjs">
+            <result>/WEB-INF/pages/tzZtjjList.jsp</result>
+        </action>
+        -->
+        <!--TzZtjjAction-END-->
+
+        <!--CpChargeAction-START-->
+        <action name="cpCharges" class="com.joker.wms.webapp.action.CpChargeAction" method="list">
+            <result>/WEB-INF/pages/cpChargeList.jsp</result>
+        </action>
+
+        <action name="editCpCharge" class="com.joker.wms.webapp.action.CpChargeAction" method="edit">
+            <result>/WEB-INF/pages/cpChargeForm.jsp</result>
+            <result name="error">/WEB-INF/pages/cpChargeList.jsp</result>
+        </action>
+
+        <action name="saveCpCharge" class="com.joker.wms.webapp.action.CpChargeAction" method="save">
+            <result name="input">/WEB-INF/pages/cpChargeForm.jsp</result>
+            <result name="cancel" type="redirectAction">cpCharges</result>
+            <result name="delete" type="redirectAction">cpCharges</result>
+            <result name="success" type="redirectAction">cpCharges</result>
+        </action>
+        <!--
+        <action name="cpCharges">
+            <result>/WEB-INF/pages/cpChargeList.jsp</result>
+        </action>
+        -->
+        <!--CpChargeAction-END-->
+
+        <!--PetitionAction-START-->
+        <action name="petitions" class="com.joker.wms.webapp.action.PetitionAction" method="list">
+            <result>/WEB-INF/pages/petitionList.jsp</result>
+        </action>
+
+        <action name="editPetition" class="com.joker.wms.webapp.action.PetitionAction" method="edit">
+            <result name="success">/WEB-INF/pages/petitionForm.jsp</result>
+            <result name="approval">/WEB-INF/pages/petitionApprovalForm.jsp</result>
+            <result name="resolve">/WEB-INF/pages/petitionResolveForm.jsp</result>
+            <result name="finish">/WEB-INF/pages/petitionFinishForm.jsp</result>
+            <result name="error">/WEB-INF/pages/petitionList.jsp</result>
+        </action>
+
+        <action name="savePetition" class="com.joker.wms.webapp.action.PetitionAction" method="save">
+            <result name="input">/WEB-INF/pages/petitionForm.jsp</result>
+            <result name="cancel" type="redirectAction">petitions</result>
+            <result name="delete" type="redirectAction">petitions</result>
+            <result name="success" type="redirectAction">petitions</result>
+        </action>
+        <action name="saveApprovalPetition" class="com.joker.wms.webapp.action.PetitionAction" method="saveApprovalPetition">
+            <result name="success">/WEB-INF/pages/petitionApprovalForm.jsp</result>
+        </action>
+        <action name="saveFinishPetition" class="com.joker.wms.webapp.action.PetitionAction" method="saveFinishPetition">
+            <result name="success">/WEB-INF/pages/petitionFinishForm.jsp</result>
+        </action>
+        <action name="saveResolvePetition" class="com.joker.wms.webapp.action.PetitionAction" method="saveResolvePetition">
+            <result name="success">/WEB-INF/pages/petitionResolveForm.jsp</result>
+        </action>
+        <!--
+        <action name="petitions">
+            <result>/WEB-INF/pages/petitionList.jsp</result>
+        </action>
+        -->
+        <!--PetitionAction-END-->
+
+        <!--PetitionFlowAction-START-->
+        <action name="petitionFlows" class="com.joker.wms.webapp.action.PetitionFlowAction" method="list">
+            <result>/WEB-INF/pages/petitionFlowList.jsp</result>
+        </action>
+
+        <action name="editPetitionFlow" class="com.joker.wms.webapp.action.PetitionFlowAction" method="edit">
+            <result>/WEB-INF/pages/petitionFlowForm.jsp</result>
+            <result name="error">/WEB-INF/pages/petitionFlowList.jsp</result>
+        </action>
+
+        <action name="savePetitionFlow" class="com.joker.wms.webapp.action.PetitionFlowAction" method="save">
+            <result name="input">/WEB-INF/pages/petitionFlowForm.jsp</result>
+            <result name="cancel" type="redirectAction">petitionFlows</result>
+            <result name="delete" type="redirectAction">petitionFlows</result>
+            <result name="success" type="redirectAction">petitionFlows</result>
+        </action>
+        <!--PetitionFlowAction-END-->
+
+        <!--TestQuestionAction-START-->
+        <action name="testQuestions" class="com.joker.wms.webapp.action.TestQuestionAction" method="list">
+            <result>/WEB-INF/pages/testQuestionList.jsp</result>
+        </action>
+
+        <action name="editTestQuestion" class="com.joker.wms.webapp.action.TestQuestionAction" method="edit">
+            <result>/WEB-INF/pages/testQuestionForm.jsp</result>
+            <result name="error">/WEB-INF/pages/testQuestionList.jsp</result>
+        </action>
+
+        <action name="saveTestQuestion" class="com.joker.wms.webapp.action.TestQuestionAction" method="save">
+            <result name="input">/WEB-INF/pages/testQuestionForm.jsp</result>
+            <result name="cancel" type="redirectAction">testQuestions</result>
+            <result name="delete" type="redirectAction">testQuestions</result>
+            <result name="success" type="redirectAction">testQuestions</result>
+        </action>
+        <!--TestQuestionAction-END-->
+
+        <!--TestPaperAction-START-->
+        <action name="testPapers" class="com.joker.wms.webapp.action.TestPaperAction" method="list">
+            <result>/WEB-INF/pages/testPaperList.jsp</result>
+        </action>
+
+        <action name="editTestPaper" class="com.joker.wms.webapp.action.TestPaperAction" method="edit">
+            <result>/WEB-INF/pages/testPaperForm.jsp</result>
+            <result name="error">/WEB-INF/pages/testPaperList.jsp</result>
+        </action>
+
+        <action name="saveTestPaper" class="com.joker.wms.webapp.action.TestPaperAction" method="save">
+            <result name="input">/WEB-INF/pages/testPaperForm.jsp</result>
+            <result name="cancel" type="redirectAction">testPapers</result>
+            <result name="delete" type="redirectAction">testPapers</result>
+            <result name="success" type="redirectAction">testPapers</result>
+        </action>
+        <!--TestPaperAction-END-->
+
+        <!--AnswererAction-START-->
+        <action name="answerers" class="com.joker.wms.webapp.action.AnswererAction" method="list">
+            <result>/WEB-INF/pages/answererList.jsp</result>
+        </action>
+
+        <action name="editAnswerer" class="com.joker.wms.webapp.action.AnswererAction" method="edit">
+            <result>/WEB-INF/pages/answererForm.jsp</result>
+            <result name="error">/WEB-INF/pages/answererList.jsp</result>
+        </action>
+
+        <action name="saveAnswerer" class="com.joker.wms.webapp.action.AnswererAction" method="save">
+            <result name="input">/WEB-INF/pages/answererForm.jsp</result>
+            <result name="cancel" type="redirectAction">answerers</result>
+            <result name="delete" type="redirectAction">answerers</result>
+            <result name="success" type="redirectAction">answerers</result>
+        </action>
+        <!--AnswererAction-END-->
+
+        <!--AlarmSetAction-START-->
+        <action name="alarmSets" class="com.joker.wms.webapp.action.AlarmSetAction" method="list">
+            <result>/WEB-INF/pages/alarmSetList.jsp</result>
+        </action>
+
+        <action name="editAlarmSet" class="com.joker.wms.webapp.action.AlarmSetAction" method="edit">
+            <result>/WEB-INF/pages/alarmSetForm.jsp</result>
+            <result name="error">/WEB-INF/pages/alarmSetList.jsp</result>
+        </action>
+
+        <action name="saveAlarmSet" class="com.joker.wms.webapp.action.AlarmSetAction" method="save">
+            <result name="input">/WEB-INF/pages/alarmSetForm.jsp</result>
+            <result name="cancel" type="redirectAction">alarmSets</result>
+            <result name="delete" type="redirectAction">alarmSets</result>
+            <result name="success" type="redirectAction">alarmSets</result>
+        </action>
+        <!--AlarmSetAction-END-->
+
+        <!--GeoAction-START-->
+        <action name="geoes" class="com.joker.wms.webapp.action.GeoAction" method="list">
+            <result>/WEB-INF/pages/geoList.jsp</result>
+        </action>
+
+        <action name="editGeo" class="com.joker.wms.webapp.action.GeoAction" method="edit">
+            <result>/WEB-INF/pages/geoForm.jsp</result>
+            <result name="error">/WEB-INF/pages/geoList.jsp</result>
+        </action>
+
+        <action name="saveGeo" class="com.joker.wms.webapp.action.GeoAction" method="save">
+            <result name="input">/WEB-INF/pages/geoForm.jsp</result>
+            <result name="cancel" type="redirectAction">geoes</result>
+            <result name="delete" type="redirectAction">geoes</result>
+            <result name="success" type="redirectAction">geoes</result>
+        </action>
+        <!--GeoAction-END-->
+
+        <!-- Add additional actions here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </package>
+    <!-- Actions in this package will be prefixed with /dialog/ -->
+	<package name="dialog" extends="default" namespace="/dialog">
+		<action name="addcustom" class="com.joker.wms.webapp.action.PartyGroupAction" method="addcustom">
+			<result>/WEB-INF/pages/dialog/addcustom.jsp</result>
+		</action>
+		<action name="shipSalePlan" class="com.joker.wms.webapp.action.SalePlanAction" method="shipSalePlan"/>
+	</package> 
+    <!-- Actions in this package will be prefixed with /admin/ -->
+    <package name="admin" extends="default" namespace="/admin">
+        <action name="activeUsers" class="com.opensymphony.xwork2.ActionSupport">
+            <result name="success">/WEB-INF/pages/admin/activeUsers.jsp</result>
+        </action>
+		
+        <action name="reload" class="com.joker.wms.webapp.action.ReloadAction">
+            <interceptor-ref name="adminCheck"/>
+            <!-- this should never be used, it's here to prevent warnings -->
+            <result name="success">/WEB-INF/pages/home.jsp</result>
+        </action>
+
+        <action name="users" class="userAction" method="list">
+            <interceptor-ref name="adminCheck"/>
+            <result name="success">/WEB-INF/pages/admin/userList.jsp</result>
+        </action>
+        
+        <!-- group -->
+        <action name="enumeration">
+            <result>/WEB-INF/pages/admin/enumeration.jsp</result>
+        </action>
+        <action name="status">
+            <result>/WEB-INF/pages/admin/status.jsp</result>
+        </action>
+        <action name="relationship">
+            <result>/WEB-INF/pages/admin/relationship.jsp</result>
+        </action>
+        <action name="uom">
+            <result>/WEB-INF/pages/admin/uom.jsp</result>
+        </action>
+        <action name="organization">
+            <result>/WEB-INF/pages/admin/organization.jsp</result>
+        </action>
+        
+        <action name="enumerationTypes">
+            <result>/WEB-INF/pages/enumerationTypeList.jsp</result>
+        </action>
+        <action name="statusTypes">
+            <result>/WEB-INF/pages/statusTypeList.jsp</result>
+        </action>
+        <action name="statusItems">
+            <result>/WEB-INF/pages/statusItemList.jsp</result>
+        </action>
+        <action name="enumerations">
+            <result>/WEB-INF/pages/enumerationList.jsp</result>
+        </action>
+        <action name="statusValidChanges">
+            <result>/WEB-INF/pages/statusValidChangeList.jsp</result>
+        </action>
+        <action name="partyRelationshipTypes">
+            <result>/WEB-INF/pages/partyRelationshipTypeList.jsp</result>
+        </action>
+        <action name="partyRelationships">
+            <result>/WEB-INF/pages/partyRelationshipList.jsp</result>
+        </action>
+        <action name="uomTypes">
+            <result>/WEB-INF/pages/uomTypeList.jsp</result>
+        </action>
+        <action name="uoms">
+            <result>/WEB-INF/pages/uomList.jsp</result>
+        </action>
+        <action name="uomConversions">
+            <result>/WEB-INF/pages/uomConversionList.jsp</result>
+        </action>
+        <action name="roleTypes">
+            <result>/WEB-INF/pages/roleTypeList.jsp</result>
+        </action>
+        <action name="persons">
+            <result>/WEB-INF/pages/personList.jsp</result>
+        </action>
+        <action name="partyGroups">
+            <result>/WEB-INF/pages/partyGroupList.jsp</result>
+        </action>
+        <action name="geoes">
+            <result>/WEB-INF/pages/admin/geoList.jsp</result>
+        </action>
+    </package>
+    <package name="facility" extends="default" namespace="/facility">
+    	<action name="facilityset">
+            <result>/WEB-INF/pages/facility/facilityset.jsp</result>
+        </action>
+        <action name="pricesset" class="com.joker.wms.webapp.action.PriceAction" method="pricesetlist">
+            <result>/WEB-INF/pages/facility/pricesset.jsp</result>
+        </action>
+        <action name="saleplanset">
+            <result>/WEB-INF/pages/facility/saleplanset.jsp</result>
+        </action>
+        <action name="shipmentset">
+            <result>/WEB-INF/pages/facility/shipmentset.jsp</result>
+        </action>
+        <action name="facilityfill" class="com.joker.wms.webapp.action.SalePlanAction" method="facilityfill">
+            <result>/WEB-INF/pages/facility/facilityfill.jsp</result>
+        </action>
+        <action name="customSet">
+            <result>/WEB-INF/pages/facility/customset.jsp</result>
+        </action>
+        <action name="shipCars">
+            <result>/WEB-INF/pages/shipCarList.jsp</result>
+        </action>
+    	<action name="facilities">
+            <result>/WEB-INF/pages/facilityList.jsp</result>
+        </action>
+        <action name="products">
+            <result>/WEB-INF/pages/productList.jsp</result>
+        </action>
+        <action name="prices">
+            <result>/WEB-INF/pages/priceList.jsp</result>
+        </action>
+        <action name="facilityTransitions">
+            <result>/WEB-INF/pages/facilityTransitionList.jsp</result>
+        </action>
+        <action name="shipments">
+            <result>/WEB-INF/pages/shipmentList.jsp</result>
+        </action>
+        <action name="salePlanDtls">
+            <result>/WEB-INF/pages/salePlanDtlList.jsp</result>
+        </action>
+        <action name="salePlans">
+            <result>/WEB-INF/pages/salePlanList.jsp</result>
+        </action>
+    </package>
+    <package name="wms" extends="default" namespace="/wms">
+    	<action name="villageset">
+    		<result>/WEB-INF/pages/wms/villageset.jsp</result>
+    	</action>
+    	<action name="zhibuset">
+    		<result>/WEB-INF/pages/wms/zhibuset.jsp</result>
+    	</action>
+    	<action name="cpset">
+    		<result>/WEB-INF/pages/wms/cpset.jsp</result>
+    	</action>
+    	<action name="unitset">
+    		<result>/WEB-INF/pages/wms/unitset.jsp</result>
+    	</action>
+    	<action name="mzyfset" class="com.joker.wms.webapp.action.TbCarePeopleAction" method="mzyfset">
+    		<result>/WEB-INF/pages/wms/mzyfset.jsp</result>
+    	</action>
+    	<action name="mzyfprovide">
+    		<result>/WEB-INF/pages/wms/mzyfprovide.jsp</result>
+    	</action>
+        <action name="tztb" class="com.joker.wms.webapp.action.TzDyzthAction" method="tztb">
+            <result>/WEB-INF/pages/wms/tztb.jsp</result>
+        </action>
+        <action name="tzshow" class="com.joker.wms.webapp.action.TzDyzthAction" method="tzshow">
+            <result>/WEB-INF/pages/wms/tzshow.jsp</result>
+        </action>
+        <action name="approvalsearch" class="com.joker.wms.webapp.action.ApprovalProjAction" method="approvalsearch">
+            <result>/WEB-INF/pages/wms/approvalsearch.jsp</result>
+        </action>
+        <action name="cpChargeSearch" class="com.joker.wms.webapp.action.CpChargeAction" method="cpChargeSearch">
+    		<result>/WEB-INF/pages/wms/cpchargesearch.jsp</result>
+    	</action>
+    	<action name="cpChargeOper" class="com.joker.wms.webapp.action.CpChargeAction" method="cpChargeOper">
+    		<result>/WEB-INF/pages/wms/cpchargeoper.jsp</result>
+    	</action>
+    	<action name="petitionFlows">
+            <result>/WEB-INF/pages/petitionFlowList.jsp</result>
+        </action>
+        <action name="testQuestions">
+            <result>/WEB-INF/pages/wms/testQuestionList.jsp</result>
+        </action>
+        <action name="answerers">
+            <result>/WEB-INF/pages/answererList.jsp</result>
+        </action>
+        <action name="testPapers">
+            <result>/WEB-INF/pages/testPaperList.jsp</result>
+        </action>
+        <action name="monitorsite">
+            <result>/WEB-INF/pages/wms/monitorsite.jsp</result>
+        </action>
+        <action name="alarmSets">
+            <result>/WEB-INF/pages/wms/alarmSet.jsp</result>
+        </action>
+    </package>
+    <package name="wmsd" extends="default" namespace="/wmsd">
+    	<action name="partyGroupsTree" class="com.joker.wms.webapp.action.PartyGroupAction" method="partyGroupsTree">
+    		<result>/WEB-INF/pages/wms/villagetree.jsp</result>
+    	</action>
+    	<action name="unitTree" class="com.joker.wms.webapp.action.PartyGroupAction" method="unitTree">
+    		<result>/WEB-INF/pages/wms/unittree.jsp</result>
+    	</action>
+    	<action name="zhibuTree" class="com.joker.wms.webapp.action.PartyGroupAction" method="zhibuTree">
+    		<result>/WEB-INF/pages/wms/zhibutree.jsp</result>
+    	</action>
+    	<action name="editPartyGroupCun" class="com.joker.wms.webapp.action.PartyGroupAction" method="editPartyGroupCun">
+            <result>/WEB-INF/pages/partyGroupCunForm.jsp</result>
+        </action>
+        <action name="editPartyGroupDangwei" class="com.joker.wms.webapp.action.PartyGroupAction" method="editPartyGroupDangwei">
+            <result>/WEB-INF/pages/partyGroupDangweiForm.jsp</result>
+        </action>
+        <action name="editPartyGroupUnit" class="com.joker.wms.webapp.action.PartyGroupAction" method="editPartyGroupUnit">
+            <result>/WEB-INF/pages/partyGroupUnitForm.jsp</result>
+        </action>
+        <action name="savePartyGroupCun" class="com.joker.wms.webapp.action.PartyGroupAction" method="savePartyGroupCun">
+            <result>/WEB-INF/pages/partyGroupForm.jsp</result>
+        </action>
+        <action name="savePartyGroupDangwei" class="com.joker.wms.webapp.action.PartyGroupAction" method="savePartyGroupDangwei">
+            <result>/WEB-INF/pages/partyGroupForm.jsp</result>
+        </action>
+        <action name="savePartyGroupUnit" class="com.joker.wms.webapp.action.PartyGroupAction" method="savePartyGroupUnit">
+            <result>/WEB-INF/pages/partyGroupForm.jsp</result>
+        </action>
+        <action name="editCunPerson" class="com.joker.wms.webapp.action.PersonAction" method="editCunPerson">
+            <result>/WEB-INF/pages/cunPersonForm.jsp</result>
+        </action>
+        <action name="saveCunPerson" class="com.joker.wms.webapp.action.PersonAction" method="saveCunPerson">
+            <result>/WEB-INF/pages/cunPersonForm.jsp</result>
+        </action>
+        <action name="editDangPerson" class="com.joker.wms.webapp.action.PersonAction" method="editDangPerson">
+            <result>/WEB-INF/pages/dangPersonForm.jsp</result>
+        </action>
+        <action name="editPositivePerson" class="com.joker.wms.webapp.action.PersonAction" method="editPositivePerson">
+            <result>/WEB-INF/pages/editPositivePerson.jsp</result>
+        </action>
+        <action name="saveDangPerson" class="com.joker.wms.webapp.action.PersonAction" method="saveDangPerson">
+            <result>/WEB-INF/pages/dangPersonForm.jsp</result>
+        </action>
+        <action name="savePositivePerson" class="com.joker.wms.webapp.action.PersonAction" method="savePositivePerson">
+            <result>/WEB-INF/pages/editPositivePerson.jsp</result>
+        </action>
+        <action name="editUnitPerson" class="com.joker.wms.webapp.action.PersonAction" method="editUnitPerson">
+            <result>/WEB-INF/pages/unitPersonForm.jsp</result>
+        </action>
+        <action name="saveUnitPerson" class="com.joker.wms.webapp.action.PersonAction" method="saveUnitPerson">
+            <result>/WEB-INF/pages/unitPersonForm.jsp</result>
+        </action>
+        
+        <action name="cunInfoDtl" class="com.joker.wms.webapp.action.PartyGroupAction" method="cunInfoDtl">
+            <result>/WEB-INF/pages/wms/villagedtl.jsp</result>
+        </action>
+        <action name="tzdtl" class="com.joker.wms.webapp.action.PartyGroupAction" method="tzdtl">
+            <result>/WEB-INF/pages/wms/tzdtl.jsp</result>
+        </action>
+        <action name="zhibuuser" class="com.joker.wms.webapp.action.PartyGroupAction" method="zhibuuser">
+            <result>/WEB-INF/pages/wms/zhibuuser.jsp</result>
+        </action>
+        <action name="zhibuInfoDtl" class="com.joker.wms.webapp.action.PartyGroupAction" method="zhibuInfoDtl">
+            <result>/WEB-INF/pages/wms/zhibudtl.jsp</result>
+        </action>
+        <action name="cpChargeDtl" class="com.joker.wms.webapp.action.PartyGroupAction" method="cpChargeDtl">
+            <result>/WEB-INF/pages/wms/cpchargedtl.jsp</result>
+        </action>
+        <action name="unitInfoDtl" class="com.joker.wms.webapp.action.PartyGroupAction" method="unitInfoDtl">
+            <result>/WEB-INF/pages/wms/unitdtl.jsp</result>
+        </action>
+        <!-- 新增人员优抚类型 -->
+        <action name="addPeopleYFType" class="com.joker.wms.webapp.action.TbCarePeopleAction" method="addPeopleYFType">
+            <result>/WEB-INF/pages/wms/addPeopleYFType.jsp</result>
+        </action>
+        <action name="savePeopleYFType" class="com.joker.wms.webapp.action.TbCarePeopleAction" method="savePeopleYFType">
+            <result>/WEB-INF/pages/wms/addPeopleYFType.jsp</result>
+        </action>
+        <!-- 人员优抚类型列表 -->
+        <action name="peopleYFTypes" class="com.joker.wms.webapp.action.TbCarePeopleAction" method="peopleYFTypes">
+            <result>/WEB-INF/pages/wms/peopleYFTypeList.jsp</result>
+        </action>
+        <action name="sendMoney" class="com.joker.wms.webapp.action.TbProvideAction" method="sendMoney">
+            <result>/WEB-INF/pages/wms/peopleYFTypeList.jsp</result>
+        </action>
+        <!-- 党员 -->
+        <action name="dangpersons" class="com.joker.wms.webapp.action.PersonAction" method="dangpersons">
+            <result>/WEB-INF/pages/dangpersonList.jsp</result>
+        </action>
+        <action name="positivepersons" class="com.joker.wms.webapp.action.PersonAction" method="positivepersons">
+            <result>/WEB-INF/pages/positivepersonList.jsp</result>
+        </action>
+        <action name="cpDtlInfo" class="com.joker.wms.webapp.action.PersonAction" method="cpDtlInfo">
+            <result>/WEB-INF/pages/wms/cpDtlInfo.jsp</result>
+        </action>
+        <!-- 党员审批 -->
+        <action name="approvalDangPerson" class="com.joker.wms.webapp.action.PersonAction" method="approvalDangPerson">
+            <result>/WEB-INF/pages/wms/approvalDangPerson.jsp</result>
+        </action>
+        <action name="approvalDangPersonSave" class="com.joker.wms.webapp.action.PersonAction" method="approvalDangPersonSave">
+            <result>/WEB-INF/pages/wms/approvalDangPerson.jsp</result>
+        </action>
+        <!-- 党员考试 -->
+        <action name="examination" class="com.joker.wms.webapp.action.TestPaperAction" method="examination">
+            <result>/WEB-INF/pages/wms/examination.jsp</result>
+        </action>
+        <action name="examinationpaper" class="com.joker.wms.webapp.action.TestPaperAction" method="examinationpaper">
+            <result name="success">/WEB-INF/pages/wms/examinationpaper.jsp</result>
+            <result name="error" type="redirectAction">examination</result>
+        </action>
+        <action name="examinationSaveAnswer" class="com.joker.wms.webapp.action.TestPaperAction" method="examinationSaveAnswer">
+        	<result name="success">/WEB-INF/pages/jsonResult.jsp</result>
+        </action>
+        <action name="examinationCommit" class="com.joker.wms.webapp.action.TestPaperAction" method="examinationCommit">
+        	<result name="success" type="redirectAction">examinationResults</result>
+        </action>
+        <action name="examinationResult" class="com.joker.wms.webapp.action.TestPaperAction" method="examinationResult">
+        	<result name="success">/WEB-INF/pages/wms/examinationresult.jsp</result>
+        </action>
+        <action name="examinationResults" class="com.joker.wms.webapp.action.TestPaperAction" method="examinationResults">
+        	<result name="success">/WEB-INF/pages/wms/examinationresults.jsp</result>
+        </action>
+    </package>
+    
+</struts>

@@ -1,0 +1,92 @@
+    <!--Geo-START-->
+    <!-- runs geo-related tests -->
+    <target name="GeoTests" depends="SearchGeoes,EditGeo,SaveGeo,AddGeo,DeleteGeo"
+            description="Call and executes all geo test cases (targets)">
+        <echo>Successfully ran all Geo UI tests!</echo>
+    </target>
+
+    <!-- Verify the geoes list screen displays without errors -->
+    <target name="SearchGeoes" description="Tests search for and displaying all geoes">
+        <webtest name="searchGeoes">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click View Geo link" url="/geoes"/>
+                <verifytitle description="we should see the geoList title"
+                             text=".*${geoList.title}.*" regex="true"/>
+                <setinputfield description="set search term" name="q" value="*"/>
+                <clickbutton label="${button.search}" description="Click Search"/>
+                <verifytitle description="we should see the geoList title"
+                             text=".*${geoList.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Verify the edit geo screen displays without errors -->
+    <target name="EditGeo" description="Tests editing an existing Geo's information">
+        <webtest name="editGeo">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit Geo link" url="/editGeo?geoId=-1"/>
+                <verifytitle description="we should see the geoDetail title"
+                             text=".*${geoDetail.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Edit a geo and then save -->
+    <target name="SaveGeo" description="Tests editing and saving a geo">
+        <webtest name="saveGeo">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit Geo link" url="/editGeo?geoId=-1"/>
+                <verifytitle description="we should see the geoDetail title"
+                             text=".*${geoDetail.title}.*" regex="true"/>
+
+                <!-- update some of the required fields -->
+
+                <clickbutton label="${button.save}" description="Click Save"/>
+                <verifytitle description="Page re-appears if save successful"
+                             text=".*${geoDetail.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${geo.updated}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Add a new Geo -->
+    <target name="AddGeo" description="Adds a new Geo">
+        <webtest name="addGeo">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Add Button" url="/editGeo"/>
+                <verifytitle description="we should see the geoDetail title"
+                             text=".*${geoDetail.title}.*" regex="true"/>
+
+                <!-- enter required fields -->
+
+                <clickbutton label="${button.save}" description="Click button 'Save'"/>
+                <verifytitle description="Geo List appears if save successful"
+                             text=".*${geoList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${geo.added}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Delete existing geo -->
+    <target name="DeleteGeo" description="Deletes existing Geo">
+        <webtest name="deleteGeo">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit Geo link" url="/editGeo?geoId=-1"/>
+                <clickbutton label="${button.delete}" description="Click button 'Delete'"/>
+                <verifytitle description="display Geo List" text=".*${geoList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${geo.deleted}"/>
+            </steps>
+        </webtest>
+    </target>
+    <!--Geo-END-->
+</project>

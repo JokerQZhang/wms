@@ -1,0 +1,39 @@
+主要是由于带外键的hibernate映射会出现多种问题，所以如此解决
+步骤：
+1、备份现在的数据库
+mysqldump -uroot -psa wms>wms1.0.sql
+2、执行如下语句
+alter table enumeration drop foreign key FK_jr8;
+alter table facility_transition drop foreign key FK_jr11;
+alter table party_group drop foreign key FK_jr3;
+alter table party_relationship drop foreign key FK_jr9;
+alter table party_role drop foreign key FK_jr4;
+alter table party_role drop foreign key FK_jr6;
+alter table party_user drop foreign key FK_jr5;
+alter table person drop foreign key FK_jr7;
+alter table price drop foreign key FK_jr10;
+alter table sale_plan_dtl drop foreign key FK_jr14;
+alter table shipment drop foreign key FK_jr13;
+alter table shipment drop foreign key FK_jr15;
+alter table status_item drop foreign key FK_jr2;
+alter table uom drop foreign key FK_jr1;
+ALTER TABLE village_info DROP FOREIGN KEY FK_jr16;
+ALTER TABLE tb_people_care DROP FOREIGN KEY FK_jr17;
+ALTER TABLE tb_people_care DROP FOREIGN KEY FK_jr18;
+ALTER TABLE tb_provide_dtl DROP FOREIGN KEY FK_jr19;
+ALTER TABLE tb_provide_dtl DROP FOREIGN KEY FK_jr20;
+ALTER TABLE tb_provide_dtl DROP FOREIGN KEY FK_jr21;
+ALTER TABLE approval_proj DROP FOREIGN KEY FK_jr22;
+ALTER TABLE cp_dtl DROP FOREIGN KEY FK_jr23;
+ALTER TABLE cp_positive DROP FOREIGN KEY FK_jr24;
+ALTER TABLE petition_flow DROP FOREIGN KEY FK_jr25;
+ALTER TABLE paper_question DROP FOREIGN KEY FK_jr26;
+ALTER TABLE paper_question DROP FOREIGN KEY FK_jr27;
+ALTER TABLE question_option DROP FOREIGN KEY FK_jr28;
+ALTER TABLE examination DROP FOREIGN KEY FK_jr29;
+ALTER TABLE examination DROP FOREIGN KEY FK_jr30;
+
+3、执行 
+mvn appfuse:gen-model
+4、删除数据库，回复1步骤中备份的数据库
+mysql -uroot -psa wms<wms1.0.sql
