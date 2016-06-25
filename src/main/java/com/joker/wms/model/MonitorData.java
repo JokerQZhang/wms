@@ -32,7 +32,7 @@ import java.io.Serializable;
 public class MonitorData extends BaseObject implements Serializable {
     private Long monitorId;
     private Long siteId;
-    private Date 时间;
+    private Date monitorTime;
     private BigDecimal k1;
     private BigDecimal k2;
     private BigDecimal k3;
@@ -73,14 +73,14 @@ public class MonitorData extends BaseObject implements Serializable {
         this.siteId = siteId;
     }
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="时间", length=19)
+    @Column(name="monitor_time", length=19)
     @Field
-    public Date get时间() {
-        return this.时间;
+    public Date getMonitorTime() {
+        return this.monitorTime;
     }
     
-    public void set时间(Date 时间) {
-        this.时间 = 时间;
+    public void setMonitorTime(Date monitorTime) {
+        this.monitorTime = monitorTime;
     }
     
     @Column(name="k1", precision=20, scale=8)
@@ -290,7 +290,7 @@ public class MonitorData extends BaseObject implements Serializable {
         MonitorData pojo = (MonitorData) o;
 
         if (siteId != null ? !siteId.equals(pojo.siteId) : pojo.siteId != null) return false;
-        if (时间 != null ? !时间.equals(pojo.时间) : pojo.时间 != null) return false;
+        if (monitorTime != null ? !monitorTime.equals(pojo.monitorTime) : pojo.monitorTime != null) return false;
         if (k1 != null ? !k1.equals(pojo.k1) : pojo.k1 != null) return false;
         if (k2 != null ? !k2.equals(pojo.k2) : pojo.k2 != null) return false;
         if (k3 != null ? !k3.equals(pojo.k3) : pojo.k3 != null) return false;
@@ -318,7 +318,7 @@ public class MonitorData extends BaseObject implements Serializable {
     public int hashCode() {
         int result = 0;
         result = (siteId != null ? siteId.hashCode() : 0);
-        result = 31 * result + (时间 != null ? 时间.hashCode() : 0);
+        result = 31 * result + (monitorTime != null ? monitorTime.hashCode() : 0);
         result = 31 * result + (k1 != null ? k1.hashCode() : 0);
         result = 31 * result + (k2 != null ? k2.hashCode() : 0);
         result = 31 * result + (k3 != null ? k3.hashCode() : 0);
@@ -349,7 +349,7 @@ public class MonitorData extends BaseObject implements Serializable {
         sb.append(" [");
         sb.append("monitorId").append("='").append(getMonitorId()).append("', ");
         sb.append("siteId").append("='").append(getSiteId()).append("', ");
-        sb.append("时间").append("='").append(get时间()).append("', ");
+        sb.append("monitorTime").append("='").append(getMonitorTime()).append("', ");
         sb.append("k1").append("='").append(getK1()).append("', ");
         sb.append("k2").append("='").append(getK2()).append("', ");
         sb.append("k3").append("='").append(getK3()).append("', ");

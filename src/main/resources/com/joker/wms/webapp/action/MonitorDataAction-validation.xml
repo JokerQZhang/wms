@@ -1,9 +1,8 @@
 <!DOCTYPE validators PUBLIC "-//Apache Struts//XWork Validator 1.0.3//EN"
         "http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
 <validators>
-	<field name="geo.geoName">
-        <field-validator type="visrequiredstringitor">
-            <param name="doTrim">true</param>
+    <field name="monitorData.siteId">
+        <field-validator type="required">
             <message>不能为空</message>
         </field-validator>
     </field>

@@ -23,6 +23,6 @@
 	</div>
 	<script type="text/javascript">
 	$(function(){
-		
+		$("#partyGroupSearchForm").submit();
 	})
 	</script>

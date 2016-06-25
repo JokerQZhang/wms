@@ -920,7 +920,46 @@
         </action>
         <!--GeoAction-END-->
 
+        <!--MonitorDataAction-START-->
+        <action name="monitorDatas" class="com.joker.wms.webapp.action.MonitorDataAction" method="list">
+            <result>/WEB-INF/pages/monitorDataList.jsp</result>
+        </action>
+
+        <action name="editMonitorData" class="com.joker.wms.webapp.action.MonitorDataAction" method="edit">
+            <result>/WEB-INF/pages/monitorDataForm.jsp</result>
+            <result name="error">/WEB-INF/pages/monitorDataList.jsp</result>
+        </action>
+
+        <action name="saveMonitorData" class="com.joker.wms.webapp.action.MonitorDataAction" method="save">
+            <result name="input">/WEB-INF/pages/monitorDataForm.jsp</result>
+            <result name="cancel" type="redirectAction">monitorDatas</result>
+            <result name="delete" type="redirectAction">monitorDatas</result>
+            <result name="success" type="redirectAction">monitorDatas</result>
+        </action>
+   
+        <!--MonitorDataAction-END-->
+
+        <!--MoniteSiteAction-START-->
+        <action name="moniteSites" class="com.joker.wms.webapp.action.MoniteSiteAction" method="list">
+            <result>/WEB-INF/pages/moniteSiteList.jsp</result>
+        </action>
+
+        <action name="editMoniteSite" class="com.joker.wms.webapp.action.MoniteSiteAction" method="edit">
+            <result>/WEB-INF/pages/moniteSiteForm.jsp</result>
+            <result name="error">/WEB-INF/pages/moniteSiteList.jsp</result>
+        </action>
+
+        <action name="saveMoniteSite" class="com.joker.wms.webapp.action.MoniteSiteAction" method="save">
+            <result name="input">/WEB-INF/pages/moniteSiteForm.jsp</result>
+            <result name="cancel" type="redirectAction">moniteSites</result>
+            <result name="delete" type="redirectAction">moniteSites</result>
+            <result name="success" type="redirectAction">moniteSites</result>
+        </action>
+        <!--MoniteSiteAction-END-->
+
         <!-- Add additional actions here -->
+
+
 
 
 
@@ -1146,6 +1185,12 @@
         </action>
         <action name="alarmSets">
             <result>/WEB-INF/pages/wms/alarmSet.jsp</result>
+        </action>
+        <action name="monitorDatas">
+            <result>/WEB-INF/pages/wms/monitorDatas.jsp</result>
+        </action>
+        <action name="moniteSites">
+            <result>/WEB-INF/pages/wms/moniteSites.jsp</result>
         </action>
     </package>
     <package name="wmsd" extends="default" namespace="/wmsd">

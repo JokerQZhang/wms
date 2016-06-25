@@ -59,5 +59,7 @@
         <mapping class="com.joker.wms.model.Examination"/>
         <mapping class="com.joker.wms.model.AlarmSet"/>
         <mapping class="com.joker.wms.model.Geo"/>
+        <mapping class="com.joker.wms.model.MonitorData"/>
+        <mapping class="com.joker.wms.model.MoniteSite"/>
     </session-factory>
 </hibernate-configuration>

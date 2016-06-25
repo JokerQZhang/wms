@@ -70,6 +70,8 @@ mvn appfuse:gen -Dentity=Answerer
 mvn appfuse:gen -Dentity=Geo
 
 mvn appfuse:gen -Dentity=AlarmSet
+mvn appfuse:gen -Dentity=MonitorData
+mvn appfuse:gen -Dentity=MoniteSite
 <!-- 
     ROLE_ADMIN--基础管理
     ROLE_CP_ADMIN--各级管理员
@@ -77,3 +79,15 @@ mvn appfuse:gen -Dentity=AlarmSet
     ROLE_SS_USER--阳光工作站操作员 1受理2审批
     ROLE_VI_USER--村级操作员，三会一课填报，第一书记工作台帐
      -->
+     
+required：必填校验器  
+requiredstring：必填字符串校验器  
+stringlength:  字符串长度校验器  
+int:整数校验器  
+date:日期校验器  
+expression：表达式校验器  
+fieldexpression：字段表达式校验器  
+email: 邮件地址校验器  
+url:网址校验器  
+conversioin:转换校验器  
+regex：正则表达式校验器  
