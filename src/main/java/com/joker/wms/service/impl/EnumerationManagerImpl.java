@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 import javax.jws.WebService;
 
 @Service("enumerationManager")
@@ -25,5 +26,10 @@ public class EnumerationManagerImpl extends GenericManagerImpl<Enumeration, Long
 	@Override
 	public List getYFTypes() {
 		return enumerationDao.getYFTypes(null);
+	}
+
+	@Override
+	public List getGeoLists(Long parentGeoId) {
+		return enumerationDao.getGeoLists(parentGeoId);
 	}
 }

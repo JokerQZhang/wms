@@ -1,5 +1,0 @@
-<!--GeoDao-START-->
-    <bean id="geoDao" class="com.joker.wms.dao.hibernate.GeoDaoHibernate"/>
-    <!--GeoDao-END-->
-
-    <!-- Add new DAOs here -->

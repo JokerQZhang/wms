@@ -1,7 +1,0 @@
-<!--AlarmSetAction-START-->
-    <bean id="alarmSetAction" class="com.joker.wms.webapp.action.AlarmSetAction" scope="prototype">
-        <property name="alarmSetManager" ref="alarmSetManager"/>
-    </bean>
-    <!--AlarmSetAction-END-->
-
-    <!-- Add new Actions here -->

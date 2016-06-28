@@ -10,7 +10,7 @@
 	<div class="panel panel-default">
 	  <div class="panel-heading">企业信息</div>
 	  <div class="panel-body">
-	    <jsp:include page="/WEB-INF/pages/partyGroupList.jsp" flush="true"></jsp:include>
+	    <jsp:include page="/WEB-INF/pages/wms/companyList.jsp" flush="true"></jsp:include>
 	  </div>
 	</div>
 </div>

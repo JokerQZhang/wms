@@ -1,7 +1,0 @@
-<!--GeoAction-START-->
-    <bean id="geoAction" class="com.joker.wms.webapp.action.GeoAction" scope="prototype">
-        <property name="geoManager" ref="geoManager"/>
-    </bean>
-    <!--GeoAction-END-->
-
-    <!-- Add new Actions here -->

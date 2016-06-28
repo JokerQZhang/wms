@@ -11,4 +11,5 @@ import com.joker.wms.model.Enumeration;
  */
 public interface EnumerationDao extends GenericDao<Enumeration, Long> {
 	public List getYFTypes(Map condition);
+	public List getGeoLists(Long parentGeoId);
 }

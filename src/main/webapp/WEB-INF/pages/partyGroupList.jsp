@@ -13,7 +13,7 @@ if(request.getAttribute("showForm") == null){
     <form method="post" action="${ctx}/partyGroups" id="partyGroupSearchForm" class="form-inline" onsubmit="return ajaxSubmitFormUpdateAreas(this,$('#partyGroupSearchFormDiv'));">
 	    <input type="hidden" name="page.pageSize"/>
     	<input type="hidden" name="page.pageIndex"/>
-    	<input type="hidden" name="organizationtype"/>
+    	<input type="hidden" name="roleTypeId"/>
 	    <div id="search" class="text-right">
 	        <span class="col-sm-9">
 	            <input type="text" size="20" name="q" id="query" value="${param.q}"

@@ -8,6 +8,7 @@ import org.apache.struts2.ServletActionContext;
 
 import com.joker.wms.Constants;
 import com.joker.wms.model.Enumeration;
+import com.joker.wms.model.Geo;
 import com.joker.wms.model.PartyGroup;
 import com.joker.wms.model.Person;
 import com.joker.wms.model.StatusItem;
@@ -408,6 +409,22 @@ public class BaseAction extends ActionSupport {
     				options += "<option value='" + sEnumeration.getEnumId() + "' selected='selected'>" + sEnumeration.getDescription() + "[" + sEnumeration.getPinyinName() + "]</option>";
     			}else{
     				options += "<option value='" + sEnumeration.getEnumId() + "'>" + sEnumeration.getDescription() + "[" + sEnumeration.getPinyinName() + "]</option>";
+    			}
+    		}
+    	}
+    	return options;
+    }
+    public String getGeoSelector(Long parentGeoId, Long selectedGeoId){
+    	String options = "";
+    	Map condition = new HashMap();
+    	condition.put("parentGeoId", parentGeoId);
+    	List selectGeo = enumerationManager.getGeoLists(parentGeoId);
+    	if(selectGeo!=null && selectGeo.size()>0){
+    		for(Geo geo : (List<Geo>)selectGeo){
+    			if(selectedGeoId!=null && selectedGeoId==geo.getGeoId()){
+    				options += "<option value='" + geo.getGeoId() + "' selected='selected'>" + geo.getGeoName() + "</option>";
+    			}else{
+    				options += "<option value='" + geo.getGeoId() + "'>" + geo.getGeoName() + "</option>";
     			}
     		}
     	}

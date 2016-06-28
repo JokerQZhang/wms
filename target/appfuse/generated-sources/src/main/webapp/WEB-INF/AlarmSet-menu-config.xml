@@ -1,6 +1,0 @@
-        <!--AlarmSet-START-->
-        <!--
-        <Menu name="AlarmSetMenu" title="alarmSetList.title" page="/alarmSets"/>
-        -->
-        <!--AlarmSet-END-->
-    </Menus>

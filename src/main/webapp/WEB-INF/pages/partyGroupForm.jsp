@@ -11,9 +11,16 @@
         <s:hidden key="partyGroup.pgId"/>
         <input type="hidden" name="parentId"/>
         <s:textfield cssClass="form-control" key="partyGroup.groupName"/>
+        <div class="form-group">
+       	  <label><fmt:message key="partyGroup.geoid"/></label>
+       	  <select class="form-control" name="partyGroup.geoid">
+       	  	<%=(String)request.getAttribute("geoOptions") %>
+       	  </select>
+        </div>
         <s:textfield cssClass="form-control" key="partyGroup.address"/>
         <s:textfield cssClass="form-control" key="partyGroup.phone"/>
         <s:textfield cssClass="form-control" key="partyGroup.numEmployees"/>
+        <s:hidden key="isCompany"/>
         <s:hidden cssClass="form-control" key="partyGroup.partyId"/>
 
         <div class="form-group">
@@ -32,6 +39,9 @@
     </s:form>
 </div>
 <script type="text/javascript">
+$(function(){
+	$("select[name='partyGroup.geoid']").combobox();
+});
 function afterSavePartyGroup(data){
 	alert(data);
 	$("#jokerdialogframexixi").dialog("close");

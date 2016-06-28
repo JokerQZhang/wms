@@ -149,6 +149,10 @@ public class PartyGroupAction extends BaseAction implements Preparable {
         try {
         	Map<String,String> conditon = new HashMap<String,String>();
         	conditon.put("roleTypeId", "1");
+        	String roleTypeId = super.getRequest().getParameter("roleTypeId");
+        	if(roleTypeId!=null && !"".equals(roleTypeId)){
+        		conditon.put("roleTypeId", roleTypeId);
+        	}
             partyGroups = partyGroupManager.search(conditon, PartyGroup.class, getPage());
         } catch (Exception se) {
         	se.printStackTrace();
@@ -186,7 +190,8 @@ public class PartyGroupAction extends BaseAction implements Preparable {
         } else {
             partyGroup = new PartyGroup();
         }
-
+        String geoOptions = super.getGeoSelector(null, partyGroup.getGeoid());
+        super.getRequest().setAttribute("geoOptions", geoOptions);
         return SUCCESS;
     }
 
@@ -219,6 +224,11 @@ public class PartyGroupAction extends BaseAction implements Preparable {
         	partyRole.setCreatedByUser(getCurrentUser().getId());
         	partyRole.setCreatedTime(new Date());
         	partyRole.setRoleTypeId(1l);
+        	//如果是company roletypeid为2
+        	String isCompany = super.getRequest().getParameter("isCompany");
+        	if(isCompany!=null&&"yes".equals(isCompany)){
+        		partyRole.setRoleTypeId(2l);
+        	}
         	partyRole.setPartyId(party.getPartyId());
         	partyRole = partyGroupManager.savePartyRole(partyRole);
         	//有父id的父id来出来保存relationship

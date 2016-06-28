@@ -6,14 +6,14 @@
     <taskdef resource="webtestTaskdefs.properties" />
 
     <!-- Use i18n bundle, 2nd one listed is the default -->
-    <property file="../../../target/classes/ApplicationResources_en.properties"/>
+    <property file="../../../target/classes/ApplicationResources_zh.properties"/>
     <property file="../../../target/classes/ApplicationResources.properties"/>
-    <property file="../../../target/classes/displaytag_en.properties"/>
+    <property file="../../../target/classes/displaytag_zh.properties"/>
     <property file="../../../target/classes/displaytag.properties"/>
 
     <!-- runs all targets -->
     <target name="run-all-tests"
-        depends="Login,Logout,PasswordHint,Signup,UserTests,StaticPages,WebServices,DWR,FileUpload,GeoTests,AlarmSetTests,AnswererTests,TestPaperTests,TestQuestionTests,PetitionFlowTests,PetitionTests,CpChargeTests,TzZtjjTests,TzHjmdTests,TzGfmzTests,TzFwqzTests,TzDyzthTests,TzDhbzTests,ApprovalProjTests,wmsHuiTests,TbProvideDtlTests,TbProvideTests,TbCarePeopleTests,FacilityTransitionTests,ShipmentTests,SalePlanDtlTests,SalePlanTests,ShipCarTests,PriceTests,ProductTests,FacilityTests,PersonTests,PartyGroupTests,RoleTypeTests,UomConversionTests,UomTests,UomTypeTests,PartyRelationshipTests,PartyRelationshipTypeTests,StatusValidChangeTests,StatusItemTests,StatusTypeTests,EnumerationTests,EnumerationTypeTests"
+        depends="Login,Logout,PasswordHint,Signup,UserTests,StaticPages,WebServices,DWR,FileUpload,MoniteSiteTests,MonitorDataTests,GeoTests,AlarmSetTests,AnswererTests,TestPaperTests,TestQuestionTests,PetitionFlowTests,PetitionTests,CpChargeTests,TzZtjjTests,TzHjmdTests,TzGfmzTests,TzFwqzTests,TzDyzthTests,TzDhbzTests,ApprovalProjTests,wmsHuiTests,TbProvideDtlTests,TbProvideTests,TbCarePeopleTests,FacilityTransitionTests,ShipmentTests,SalePlanDtlTests,SalePlanTests,ShipCarTests,PriceTests,ProductTests,FacilityTests,PersonTests,PartyGroupTests,RoleTypeTests,UomConversionTests,UomTests,UomTypeTests,PartyRelationshipTests,PartyRelationshipTypeTests,StatusValidChangeTests,StatusItemTests,StatusTypeTests,EnumerationTests,EnumerationTypeTests"
         description="Call and executes all test cases (targets)"/>
 
     <!-- runs user-related tests -->
@@ -3893,7 +3893,191 @@
         </webtest>
     </target>
     <!--Geo-END-->
+    <!--MonitorData-START-->
+    <!-- runs monitorData-related tests -->
+    <target name="MonitorDataTests" depends="SearchMonitorDatas,EditMonitorData,SaveMonitorData,AddMonitorData,DeleteMonitorData"
+            description="Call and executes all monitorData test cases (targets)">
+        <echo>Successfully ran all MonitorData UI tests!</echo>
+    </target>
+
+    <!-- Verify the monitorDatas list screen displays without errors -->
+    <target name="SearchMonitorDatas" description="Tests search for and displaying all monitorDatas">
+        <webtest name="searchMonitorDatas">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click View MonitorData link" url="/monitorDatas"/>
+                <verifytitle description="we should see the monitorDataList title"
+                             text=".*${monitorDataList.title}.*" regex="true"/>
+                <setinputfield description="set search term" name="q" value="*"/>
+                <clickbutton label="${button.search}" description="Click Search"/>
+                <verifytitle description="we should see the monitorDataList title"
+                             text=".*${monitorDataList.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Verify the edit monitorData screen displays without errors -->
+    <target name="EditMonitorData" description="Tests editing an existing MonitorData's information">
+        <webtest name="editMonitorData">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit MonitorData link" url="/editMonitorData?monitorId=-1"/>
+                <verifytitle description="we should see the monitorDataDetail title"
+                             text=".*${monitorDataDetail.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Edit a monitorData and then save -->
+    <target name="SaveMonitorData" description="Tests editing and saving a monitorData">
+        <webtest name="saveMonitorData">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit MonitorData link" url="/editMonitorData?monitorId=-1"/>
+                <verifytitle description="we should see the monitorDataDetail title"
+                             text=".*${monitorDataDetail.title}.*" regex="true"/>
+
+                <!-- update some of the required fields -->
+
+                <clickbutton label="${button.save}" description="Click Save"/>
+                <verifytitle description="Page re-appears if save successful"
+                             text=".*${monitorDataDetail.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${monitorData.updated}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Add a new MonitorData -->
+    <target name="AddMonitorData" description="Adds a new MonitorData">
+        <webtest name="addMonitorData">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Add Button" url="/editMonitorData"/>
+                <verifytitle description="we should see the monitorDataDetail title"
+                             text=".*${monitorDataDetail.title}.*" regex="true"/>
+
+                <!-- enter required fields -->
+
+                <clickbutton label="${button.save}" description="Click button 'Save'"/>
+                <verifytitle description="MonitorData List appears if save successful"
+                             text=".*${monitorDataList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${monitorData.added}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Delete existing monitorData -->
+    <target name="DeleteMonitorData" description="Deletes existing MonitorData">
+        <webtest name="deleteMonitorData">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit MonitorData link" url="/editMonitorData?monitorId=-1"/>
+                <clickbutton label="${button.delete}" description="Click button 'Delete'"/>
+                <verifytitle description="display MonitorData List" text=".*${monitorDataList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${monitorData.deleted}"/>
+            </steps>
+        </webtest>
+    </target>
+    <!--MonitorData-END-->
+    <!--MoniteSite-START-->
+    <!-- runs moniteSite-related tests -->
+    <target name="MoniteSiteTests" depends="SearchMoniteSites,EditMoniteSite,SaveMoniteSite,AddMoniteSite,DeleteMoniteSite"
+            description="Call and executes all moniteSite test cases (targets)">
+        <echo>Successfully ran all MoniteSite UI tests!</echo>
+    </target>
+
+    <!-- Verify the moniteSites list screen displays without errors -->
+    <target name="SearchMoniteSites" description="Tests search for and displaying all moniteSites">
+        <webtest name="searchMoniteSites">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click View MoniteSite link" url="/moniteSites"/>
+                <verifytitle description="we should see the moniteSiteList title"
+                             text=".*${moniteSiteList.title}.*" regex="true"/>
+                <setinputfield description="set search term" name="q" value="*"/>
+                <clickbutton label="${button.search}" description="Click Search"/>
+                <verifytitle description="we should see the moniteSiteList title"
+                             text=".*${moniteSiteList.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Verify the edit moniteSite screen displays without errors -->
+    <target name="EditMoniteSite" description="Tests editing an existing MoniteSite's information">
+        <webtest name="editMoniteSite">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit MoniteSite link" url="/editMoniteSite?siteId=-1"/>
+                <verifytitle description="we should see the moniteSiteDetail title"
+                             text=".*${moniteSiteDetail.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Edit a moniteSite and then save -->
+    <target name="SaveMoniteSite" description="Tests editing and saving a moniteSite">
+        <webtest name="saveMoniteSite">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit MoniteSite link" url="/editMoniteSite?siteId=-1"/>
+                <verifytitle description="we should see the moniteSiteDetail title"
+                             text=".*${moniteSiteDetail.title}.*" regex="true"/>
+
+                <!-- update some of the required fields -->
+
+                <clickbutton label="${button.save}" description="Click Save"/>
+                <verifytitle description="Page re-appears if save successful"
+                             text=".*${moniteSiteDetail.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${moniteSite.updated}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Add a new MoniteSite -->
+    <target name="AddMoniteSite" description="Adds a new MoniteSite">
+        <webtest name="addMoniteSite">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Add Button" url="/editMoniteSite"/>
+                <verifytitle description="we should see the moniteSiteDetail title"
+                             text=".*${moniteSiteDetail.title}.*" regex="true"/>
+
+                <!-- enter required fields -->
+
+                <clickbutton label="${button.save}" description="Click button 'Save'"/>
+                <verifytitle description="MoniteSite List appears if save successful"
+                             text=".*${moniteSiteList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${moniteSite.added}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Delete existing moniteSite -->
+    <target name="DeleteMoniteSite" description="Deletes existing MoniteSite">
+        <webtest name="deleteMoniteSite">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit MoniteSite link" url="/editMoniteSite?siteId=-1"/>
+                <clickbutton label="${button.delete}" description="Click button 'Delete'"/>
+                <verifytitle description="display MoniteSite List" text=".*${moniteSiteList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${moniteSite.deleted}"/>
+            </steps>
+        </webtest>
+    </target>
+    <!--MoniteSite-END-->
 </project>
+
+
 
 
 

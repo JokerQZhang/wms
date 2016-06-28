@@ -9,4 +9,5 @@ import javax.jws.WebService;
 @WebService
 public interface EnumerationManager extends GenericManager<Enumeration, Long> {
     public List getYFTypes();
+    public List getGeoLists(Long parentGeoId);
 }

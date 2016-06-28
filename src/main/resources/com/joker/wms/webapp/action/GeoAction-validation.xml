@@ -2,7 +2,7 @@
         "http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
 <validators>
     <field name="geo.geoName">
-        <field-validator type="visrequiredstringitor">
+        <field-validator type="requiredstring">
             <param name="doTrim">true</param>
             <message>不能为空</message>
         </field-validator>

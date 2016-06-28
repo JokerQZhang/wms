@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
+<%@ page import="java.util.Locale,java.util.ResourceBundle"%>
 <%@ include file="/common/taglibs.jsp" %>
 
 <head>
@@ -124,6 +125,12 @@
 		</div>
 	</div>
 </section>
+<%
+//Locale currentLocale = Locale.getDefault();
+//Locale locale = request.getLocale();
+//ResourceBundle myResource = ResourceBundle.getBundle("ApplicationResources_zh");
+%>
+
 <footer id="footer" class="footers">
 	<div class="footer-inner" id="footerInner">
 		<a class="footerLogo" href="#" target="_blank" style="position: absolute"><img src="<c:url value='/images/bottomlog.png'/>" alt="大同水质检测"></a>

@@ -1,7 +1,0 @@
-<!--GeoManager-START-->
-    <bean id="geoManager" class="com.joker.wms.service.impl.GeoManagerImpl">
-        <constructor-arg ref="geoDao"/>
-    </bean>
-    <!--GeoManager-END-->
-
-    <!-- Add new Managers here -->

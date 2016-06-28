@@ -67,7 +67,7 @@
                                             <li><!-- start message -->
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="/scripts/adminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                                        <img src="<c:url value="/scripts/adminLTE/dist/img/user2-160x160.jpg"/>" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>
                                                         Support Team
@@ -80,7 +80,7 @@
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="/scripts/adminLTE/dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                                                        <img src="<c:url value="/scripts/adminLTE/dist/img/user3-128x128.jpg"/>" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>
                                                         AdminLTE Design Team
@@ -92,7 +92,7 @@
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="/scripts/adminLTE/dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
+                                                        <img src="<c:url value="/scripts/adminLTE/dist/img/user4-128x128.jpg"/>" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>
                                                         Developers
@@ -104,7 +104,7 @@
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="/scripts/adminLTE/dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                                                        <img src="<c:url value="/scripts/adminLTE/dist/img/user3-128x128.jpg"/>" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>
                                                         Sales Department
@@ -116,7 +116,7 @@
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="/scripts/adminLTE/dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
+                                                        <img src="<c:url value="/scripts/adminLTE/dist/img/user4-128x128.jpg"/>" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>
                                                         Reviewers
@@ -250,13 +250,13 @@
                             <!-- User Account: style can be found in dropdown.less -->
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="/scripts/adminLTE/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                    <img src="<c:url value="/scripts/adminLTE/dist/img/user2-160x160.jpg"/>" class="user-image" alt="User Image">
                                     <span class="hidden-xs">${pageContext.request.remoteUser}</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
                                     <li class="user-header">
-                                        <img src="/scripts/adminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                        <img src="<c:url value="/scripts/adminLTE/dist/img/user2-160x160.jpg"/>" class="img-circle" alt="User Image">
 
                                         <p>
                                             Alexander Pierce - Web Developer
@@ -303,7 +303,7 @@
 
     <div class="content-wrapper" style="min-height: 403px;">
 
-        <div class="container" id="content">
+        <div class="container-fluid" id="content">
             <%@ include file="/common/messages.jsp" %>
             <section class="content-header">
                 <h1><decorator:getProperty property="meta.title.name" default="<decorator:title/>"/></h1>

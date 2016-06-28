@@ -21,14 +21,11 @@
             <Item name="GeoMenu" title="geoList.title" page="/admin/geoes" roles="ROLE_ADMIN"/>
         </Menu>
         <Menu name="MonitorMenu" title="menu.monitor" description="Admin Menu" roles="ROLE_ADMIN">
-        	<Item name="MonitorSite" title="menu.monitorsite" page="/admin/users" roles="ROLE_ADMIN"/>
-        	<Item name="SendNotify" title="menu.sendnotify" page="/admin/users" roles="ROLE_ADMIN"/>
+        	<Item name="MonitorSite" title="menu.monitorsite" page="/wms/moniteSites" roles="ROLE_ADMIN"/>
+        	<Item name="SendNotify" title="menu.sendnotify" page="/wms/alarmSets" roles="ROLE_ADMIN"/>
         	<Item name="AlarmSet" title="menu.alarmset" page="/wms/alarmSets" roles="ROLE_ADMIN"/>
-        	<Item name="MonitorData" title="menu.monitordata" page="/admin/users" roles="ROLE_ADMIN"/>
-        	<Item name="MonitorStastics" title="menu.monitorstastics" page="/admin/users" roles="ROLE_ADMIN"/>
+        	<Item name="MonitorData" title="menu.monitordata" page="/wms/monitorDatas" roles="ROLE_ADMIN"/>
+        	<Item name="MonitorStastics" title="menu.monitorstastics" page="/wms/alarmSets" roles="ROLE_ADMIN"/>
         </Menu>
-
     </Menus>
-
-
 </MenuConfig>

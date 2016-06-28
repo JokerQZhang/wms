@@ -2,6 +2,6 @@
     basepath="${basepath}" resultpath="${resultpath}" saveresponse="true"
     resultfile="web-tests-result.xml" haltonfailure="${haltonfailure}"
     haltonerror="${haltonerror}" summary="true">
-    <header name="Accept-Language" value="en"/>
+    <header name="Accept-Language" value="zh"/>
     <option name="JavaScriptEnabled" value="false"/>
 </config>
