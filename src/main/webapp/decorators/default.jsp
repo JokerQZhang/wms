@@ -42,7 +42,7 @@
 <div class="wrapper">
     <header class="main-header">
         <!-- Header Navbar: style can be found in header.less -->
-        <nav class="navbar navbar-static-top"> <a href="#" class="logo"><b>水质</b>监控</a>
+        <nav class="navbar navbar-static-top"> <a href="<c:url value="/home" />" class="logo"><b>水质</b>监控</a>
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">

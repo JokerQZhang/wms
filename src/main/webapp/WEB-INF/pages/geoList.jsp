@@ -5,7 +5,7 @@ if(request.getAttribute("showForm") == null){
 %>
 	<head>
 	    <title><fmt:message key="geoList.title"/></title>
-	    <meta name="menu" content="GeoMenu"/>
+	    <meta name="menu" content=PartyGroupMenu/>
 	    <meta name="title.name" content="<fmt:message key="geoList.heading"/>"/>
 	</head>
     <form method="post" action="${ctx}/geoes" id="geoSearchForm" class="form-inline" onsubmit="return ajaxSubmitFormUpdateAreas(this,$('#geoSearchFormDiv'));">
@@ -28,7 +28,17 @@ if(request.getAttribute("showForm") == null){
     </form>
 	<script type="text/javascript">
 		if(typeof(afterSelectGeo) == "undefined"){
-			afterSelectGeo = function(data){return true;};
+			afterSelectGeo = function(data){
+				currentGeoId = data[0];
+				var pointstr = data[3];
+				var pointopt = pointstr.split(",");
+				if(pointopt.length==2){
+					var spoint = new BMap.Point(parseFloat(pointopt[0]),parseFloat(pointopt[1]));
+					map.panTo(spoint);
+					marker.setPosition(spoint);
+				}
+				return true;
+			};
 		}
 		if(typeof(beforeGeoFormOpen) == "undefined"){
 			beforeGeoFormOpen = function(data){return true;};

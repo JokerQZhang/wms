@@ -16,9 +16,11 @@ public class MoniteSiteDaoHibernate extends GenericDaoHibernate<MoniteSite, Long
     
     @Override
     public String makeSqlForCondition(Map condition){
-		String sql = "";
+		String sql = "SELECT * FROM monite_site WHERE 1=1";
 		if(condition!=null && !condition.isEmpty()){
-    		
+    		if(condition.containsKey("partyGroupId")){
+    			sql += " AND party_id=(select party_id from party_group where pg_id="+ condition.get("partyGroupId") +")";
+    		}
     	}
 		return sql;
 	}

@@ -47,7 +47,7 @@ import java.util.Map;
  */
 public class BaseAction extends ActionSupport {
     private static final long serialVersionUID = 3525445612504421307L;
-
+    public static final String JSON = "jsonObject";
     /**
      * Constant for cancel result String
      */
@@ -161,6 +161,15 @@ public class BaseAction extends ActionSupport {
 
 	public void setJsonResult(String jsonResult) {
 		this.jsonResult = jsonResult;
+	}
+	protected Map jsonObj;
+
+	public Map getJsonObj() {
+		return jsonObj;
+	}
+
+	public void setJsonObj(Map jsonObj) {
+		this.jsonObj = jsonObj;
 	}
 
 	/**
@@ -466,5 +475,10 @@ public class BaseAction extends ActionSupport {
     		}
     	}
     	return nowZhibu;
+    }
+    public void initJsonObj(){
+    	if(jsonObj==null){
+    		jsonObj = new HashMap();
+    	}
     }
 }

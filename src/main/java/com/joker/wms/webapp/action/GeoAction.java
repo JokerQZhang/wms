@@ -107,4 +107,82 @@ public class GeoAction extends BaseAction implements Preparable {
         super.setJsonResult("SaveSuccess");
         return "jsonResult";
     }
+    public String saveGeoSitePoint(){
+    	String currentPoint = super.getRequest().getParameter("currentPoint");
+    	String currentGeoId = super.getRequest().getParameter("currentGeoId");
+    	super.initJsonObj();
+    	if(currentGeoId!=null && !"".equals(currentGeoId)){
+    		geo = geoManager.get(Long.valueOf(currentGeoId));
+    		geo.setGeoPoint(currentPoint);
+    		geoManager.save(geo);
+    		jsonObj.put("msg", geo.getGeoName()+"地理坐标保存成功");
+    	}else{
+    		jsonObj.put("msg", "地理坐标保存失败，请联系管理员。");
+    	}
+    	return JSON;
+    }
+    public String geoTree(){
+    	try {
+    		String geoParentId = super.getRequest().getParameter("geoParentId");
+        	Map condition = new HashMap();
+        	condition.put("geoParentId", geoParentId);
+            geoes = geoManager.search(condition, Geo.class, getPage());
+            //显示geo下面的company
+            List companys = geoManager.getPartyGroupByGeoId(geoParentId);
+            super.getRequest().setAttribute("companys", companys);
+        } catch (SearchException se) {
+            addActionError(se.getMessage());
+            geoes = geoManager.getAll(getPage());
+        }
+    	getRequest().setAttribute("showForm", "showData");
+    	return SUCCESS;
+    }
+    public String companySitesTree(){
+    	String companyId = super.getRequest().getParameter("companyId");
+    	//companyId其实是partyId
+    	if(companyId!=null){
+    		List moniteSites = geoManager.getMoniteSiteByParytId(companyId);
+    		super.getRequest().setAttribute("moniteSites", moniteSites);
+    	}
+    	return SUCCESS;
+    }
+    public String getAreaPoints(){
+    	super.initJsonObj();
+    	String areaId = super.getRequest().getParameter("areaId");
+    	if(areaId!=null && !"".equals(areaId)){
+    		List sites = geoManager.getAreaPoints(areaId);
+    		jsonObj.put("sites", sites);
+    		jsonObj.put("result", "success");
+    	}else{
+    		jsonObj.put("msg", "查找失败");
+    		jsonObj.put("result", "lose");
+    	}
+    	return JSON;
+    }
+    public String getCompanyPoints(){
+    	super.initJsonObj();
+    	String areaId = super.getRequest().getParameter("areaId");
+    	if(areaId!=null && !"".equals(areaId)){
+    		List sites = geoManager.getCompanyPoints(areaId);
+    		jsonObj.put("sites", sites);
+    		jsonObj.put("result", "success");
+    	}else{
+    		jsonObj.put("msg", "查找失败");
+    		jsonObj.put("result", "lose");
+    	}
+    	return JSON;
+    }
+    public String getSitePoints(){
+    	super.initJsonObj();
+    	String areaId = super.getRequest().getParameter("areaId");
+    	if(areaId!=null && !"".equals(areaId)){
+    		List sites = geoManager.getSitePoints(areaId);
+    		jsonObj.put("sites", sites);
+    		jsonObj.put("result", "success");
+    	}else{
+    		jsonObj.put("msg", "查找失败");
+    		jsonObj.put("result", "lose");
+    	}
+    	return JSON;
+    }
 }

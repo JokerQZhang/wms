@@ -11,6 +11,7 @@ if(request.getAttribute("showForm") == null){
     <form method="post" action="${ctx}/moniteSites" id="moniteSiteSearchForm" class="form-inline" onsubmit="return ajaxSubmitFormUpdateAreas(this,$('#moniteSiteSearchFormDiv'));">
 	    <input type="hidden" name="page.pageSize"/>
     	<input type="hidden" name="page.pageIndex"/>
+    	<input type="hidden" name="selectedGroupId" value="-1"/>
 	    <div id="search" class="text-right">
 	        <span class="col-sm-9">
 	            <input type="text" size="20" name="q" id="query" value="${param.q}"
@@ -28,13 +29,35 @@ if(request.getAttribute("showForm") == null){
     </form>
 	<script type="text/javascript">
 		if(typeof(afterSelectMoniteSite) == "undefined"){
-			afterSelectMoniteSite = function(data){return true;};
+			afterSelectMoniteSite = function(data){
+				//alert(data);
+				currentSiteId = data[0];
+				//alert(data[3]);
+				var pointstr = data[3];
+				var pointopt = pointstr.split(",");
+				if(pointopt.length==2){
+					var spoint = new BMap.Point(parseFloat(pointopt[0]),parseFloat(pointopt[1]));
+					map.panTo(spoint);
+					marker.setPosition(spoint);
+				}
+				return true;
+			};
 		}
 		if(typeof(beforeMoniteSiteFormOpen) == "undefined"){
-			beforeMoniteSiteFormOpen = function(data){return true;};
+			beforeMoniteSiteFormOpen = function(data){
+				var pgid = $("input[name='selectedGroupId']").val();
+				if(pgid==""){
+					alert("清闲点选公司信息，然后再添加站点。");
+					return false;
+				}
+				return true;
+			};
 		}
 		if(typeof(afterMoniteSiteFormOpen) == "undefined"){
-			afterMoniteSiteFormOpen = function(data){return true;};
+			afterMoniteSiteFormOpen = function(data){
+				$("input[name='partyGroupId']").val($("input[name='selectedGroupId']").val());
+				return true;
+			};
 		}
 	</script>
     <div id="moniteSiteSearchFormDiv"></div>

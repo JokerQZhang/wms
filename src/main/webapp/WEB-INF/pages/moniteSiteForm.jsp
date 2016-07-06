@@ -9,26 +9,19 @@
 <div class="col-sm-12">
     <s:form id="moniteSiteForm" action="saveMoniteSite" method="post" validate="false" cssClass="well" onsubmit="return ajaxSubmitFormUpdateAreas(this,undefined,afterSaveMoniteSite);">
         <s:hidden key="moniteSite.siteId"/>
+        <s:hidden key="partyGroupId"/>
+        <s:hidden key="moniteSite.partyId"/>
+        <s:hidden key="moniteSite.geopoint"/>
         <div class="form-group col-sm-12">
-				        	  <label><fmt:message key="moniteSite.conPeople"/><s:fielderror fieldName="moniteSite.conPeople"/></label>
-				        	  <input class="form-control" type="text" name="moniteSite.conPeople" value="${moniteSite.conPeople}"/>
-				          </div>
+        	  <label><fmt:message key="moniteSite.conPeople"/><s:fielderror fieldName="moniteSite.conPeople"/></label>
+        	  <input class="form-control" type="text" name="moniteSite.conPeople" value="${moniteSite.conPeople}"/>
+        </div>
             			<!--  <s:textfield cssClass="form-control" key="moniteSite.conPeople"/> -->
         <div class="form-group col-sm-12">
 				        	  <label><fmt:message key="moniteSite.email"/><s:fielderror fieldName="moniteSite.email"/></label>
 				        	  <input class="form-control" type="text" name="moniteSite.email" value="${moniteSite.email}"/>
 				          </div>
             			<!--  <s:textfield cssClass="form-control" key="moniteSite.email"/> -->
-        <div class="form-group col-sm-12">
-				        	  <label><fmt:message key="moniteSite.geopoint"/><s:fielderror fieldName="moniteSite.geopoint"/></label>
-				        	  <input class="form-control" type="text" name="moniteSite.geopoint" value="${moniteSite.geopoint}"/>
-				          </div>
-            			<!--  <s:textfield cssClass="form-control" key="moniteSite.geopoint"/> -->
-        <div class="form-group col-sm-12">
-				        	  <label><fmt:message key="moniteSite.partyId"/><s:fielderror fieldName="moniteSite.partyId"/></label>
-				        	  <input class="form-control" type="text" name="moniteSite.partyId" value="${moniteSite.partyId}"/>
-				          </div>
-            			<!--  <s:textfield cssClass="form-control" key="moniteSite.partyId"/> -->
         <div class="form-group col-sm-12">
 				        	  <label><fmt:message key="moniteSite.phone"/><s:fielderror fieldName="moniteSite.phone"/></label>
 				        	  <input class="form-control" type="text" name="moniteSite.phone" value="${moniteSite.phone}"/>

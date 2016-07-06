@@ -4,6 +4,7 @@ import com.opensymphony.xwork2.Preparable;
 import com.joker.wms.service.MoniteSiteManager;
 import com.joker.wms.dao.SearchException;
 import com.joker.wms.model.MoniteSite;
+import com.joker.wms.model.PartyGroup;
 import com.joker.wms.webapp.action.BaseAction;
 
 import java.util.List;
@@ -45,6 +46,8 @@ public class MoniteSiteAction extends BaseAction implements Preparable {
     public String list() {
         try {
         	Map condition = new HashMap();
+        	String selectedGroupId = super.getRequest().getParameter("selectedGroupId");
+        	condition.put("partyGroupId", selectedGroupId);
             moniteSites = moniteSiteManager.search(condition, MoniteSite.class, getPage());
         } catch (SearchException se) {
             addActionError(se.getMessage());
@@ -98,7 +101,15 @@ public class MoniteSiteAction extends BaseAction implements Preparable {
         }
 
         boolean isNew = (moniteSite.getSiteId() == null);
-
+        if(isNew){
+        	String partyGroupId = super.getRequest().getParameter("partyGroupId");
+        	if(partyGroupId!=null && !"".equals(partyGroupId)){
+        		PartyGroup pg = super.partyGroupManager.get(Long.valueOf(partyGroupId));
+        		if(pg!=null){
+        			moniteSite.setPartyId(pg.getPartyId());
+        		}
+        	}
+        }
         moniteSite = moniteSiteManager.save(moniteSite);
 
         String key = (isNew) ? "moniteSite.added" : "moniteSite.updated";
@@ -106,5 +117,19 @@ public class MoniteSiteAction extends BaseAction implements Preparable {
 
         super.setJsonResult("SaveSuccess");
         return "jsonResult";
+    }
+    public String saveMonitorSitePoint(){
+    	String currentSiteId = super.getRequest().getParameter("currentSiteId");
+    	String currentPoint = super.getRequest().getParameter("currentPoint");
+    	super.initJsonObj();
+    	if(currentPoint!=null&&!"".equals(currentPoint)&&currentSiteId!=null&&!"".equals(currentSiteId)){
+    		moniteSite = moniteSiteManager.get(Long.valueOf(currentSiteId));
+    		moniteSite.setGeopoint(currentPoint);
+    		moniteSiteManager.save(moniteSite);
+    		jsonObj.put("msg", moniteSite.getSitName()+"地理位置保存成功");
+    	}else{
+    		jsonObj.put("msg", moniteSite.getSitName()+"地理位置保存失败");
+    	}
+    	return "jsonObject";
     }
 }

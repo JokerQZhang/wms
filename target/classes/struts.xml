@@ -19,7 +19,7 @@
     <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
 
     <!-- Configuration for the default package. -->
-    <package name="default" extends="struts-default">
+    <package name="default" extends="struts-default,json-default">
         <interceptors>
             <!-- Interceptor to handle allowing only admins to certain actions -->
             <interceptor name="adminOnly" class="adminInterceptor"/>
@@ -47,6 +47,7 @@
                 <interceptor-ref name="conversionError"/>
                 <interceptor-ref name="validation">
                     <param name="excludeMethods">cancel,execute,delete,edit,list</param>
+                    <param name="includeMethods">save</param>
                 </interceptor-ref>
                 <interceptor-ref name="workflow">
                     <param name="excludeMethods">input,back,cancel,browse</param>
@@ -66,6 +67,9 @@
             <result name="home" type="redirectAction">home</result>
             <result name="dataAccessFailure">/WEB-INF/pages/dataAccessFailure.jsp</result>
             <result name="jsonResult">/WEB-INF/pages/jsonResult.jsp</result>
+            <result name="jsonObject" type="json">
+				<param name="root">jsonObj</param>
+			</result>
         </global-results>
 
         <global-exception-mappings>
@@ -1087,7 +1091,7 @@
             <result>/WEB-INF/pages/partyGroupList.jsp</result>
         </action>
         <action name="geoes">
-            <result>/WEB-INF/pages/admin/geoList.jsp</result>
+            <result>/WEB-INF/pages/admin/geoSetList.jsp</result>
         </action>
     </package>
     <package name="facility" extends="default" namespace="/facility">
@@ -1314,6 +1318,27 @@
         </action>
         <action name="examinationResults" class="com.joker.wms.webapp.action.TestPaperAction" method="examinationResults">
         	<result name="success">/WEB-INF/pages/wms/examinationresults.jsp</result>
+        </action>
+        <action name="saveMonitorSitePoint" class="com.joker.wms.webapp.action.MoniteSiteAction" method="saveMonitorSitePoint">
+        	<result name="success">/WEB-INF/pages/wms/examinationresults.jsp</result>
+        </action>
+        <action name="saveGeoSitePoint" class="com.joker.wms.webapp.action.GeoAction" method="saveGeoSitePoint">
+        	<result name="success">/WEB-INF/pages/wms/examinationresults.jsp</result>
+        </action>
+        <action name="geoTree" class="com.joker.wms.webapp.action.GeoAction" method="geoTree">
+        	<result name="success">/WEB-INF/pages/admin/geoTree.jsp</result>
+        </action>
+        <action name="companySitesTree" class="com.joker.wms.webapp.action.GeoAction" method="companySitesTree">
+        	<result name="success">/WEB-INF/pages/admin/siteTreeLeaf.jsp</result>
+        </action>
+        <action name="getAreaPoints" class="com.joker.wms.webapp.action.GeoAction" method="getAreaPoints">
+        	<result name="success">/WEB-INF/pages/admin/siteTreeLeaf.jsp</result>
+        </action>
+        <action name="getCompanyPoints" class="com.joker.wms.webapp.action.GeoAction" method="getCompanyPoints">
+        	<result name="success">/WEB-INF/pages/admin/siteTreeLeaf.jsp</result>
+        </action>
+        <action name="getSitePoints" class="com.joker.wms.webapp.action.GeoAction" method="getSitePoints">
+        	<result name="success">/WEB-INF/pages/admin/siteTreeLeaf.jsp</result>
         </action>
     </package>
     

@@ -4,7 +4,7 @@
 <head>
     <title><fmt:message key="activeUsers.title"/></title>
     <meta name="menu" content="AdminMenu"/>
-    <style type="text/css">
+<style type="text/css">
 .tree {
     min-height:20px;
     padding:19px;
@@ -66,7 +66,7 @@
     border:1px solid #94a0b4;
     color:#000
 }
-    </style>
+</style>
 </head>
 	<div class="col-sm-5">
 		<div class="panel panel-default">

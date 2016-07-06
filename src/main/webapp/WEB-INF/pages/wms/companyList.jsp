@@ -34,8 +34,10 @@ if(request.getAttribute("showForm") == null){
 			afterSelectPartyGroup = function(data){
 				$("input[name='selectedGroupId']").val(data[0]);
 				//刷新成员列表
-				$("input[name='belongGroupId']").val($("input[name='selectedGroupId']").val());
-				$("#personSearchForm").submit();
+				$("input[name='partyGroupId']").val($("input[name='selectedGroupId']").val());
+				$("#moniteSiteSearchForm").submit();
+				currentPoint=null;
+				currentSiteId=null;
 				return true;
 			};
 		}
