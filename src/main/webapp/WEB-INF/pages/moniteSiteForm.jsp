@@ -48,7 +48,7 @@
                     <i class="icon-trash icon-white"></i> <fmt:message key="button.delete"/>
                 </s:submit>
             </c:if>
-            <a href="#" class="btn btn-default" onclick="afterSaveMoniteSite('取消保存')">
+            <a href="#" class="btn btn-default" onclick="afterSaveMoniteSite('CancleSave')">
                 <i class="icon-remove"></i> <fmt:message key="button.cancel"/></a>
         </div>
     </s:form>
@@ -56,6 +56,11 @@
 <script type="text/javascript">
 function afterSaveMoniteSite(data){
 	if(data=="SaveSuccess"){
+		$("#jokerdialogframexixi").dialog("close");
+		formPage($("#moniteSiteSearchForm"),$("#moniteSitePageNav").find("li[class='active']").find("a").html());
+	}else if(data=="CancleSave"){
+		$("#jokerdialogframexixi").dialog("close");
+	}else if(data=="DeleteSuccess"){
 		$("#jokerdialogframexixi").dialog("close");
 		formPage($("#moniteSiteSearchForm"),$("#moniteSitePageNav").find("li[class='active']").find("a").html());
 	}else{

@@ -73,9 +73,8 @@ public class MoniteSiteAction extends BaseAction implements Preparable {
 
     public String delete() {
         moniteSiteManager.remove(moniteSite.getSiteId());
-        saveMessage(getText("moniteSite.deleted"));
-
-        return SUCCESS;
+        super.setJsonResult("DeleteSuccess");
+        return "jsonResult";
     }
 
     public String edit() {
@@ -96,7 +95,7 @@ public class MoniteSiteAction extends BaseAction implements Preparable {
 
         if (delete != null) {
             moniteSiteManager.remove(moniteSite.getSiteId());
-        	super.setJsonResult("删除成功");
+        	super.setJsonResult("DeleteSuccess");
             return "jsonResult";
         }
 
@@ -113,7 +112,7 @@ public class MoniteSiteAction extends BaseAction implements Preparable {
         moniteSite = moniteSiteManager.save(moniteSite);
 
         String key = (isNew) ? "moniteSite.added" : "moniteSite.updated";
-        saveMessage(getText(key));
+//        saveMessage(getText(key));
 
         super.setJsonResult("SaveSuccess");
         return "jsonResult";

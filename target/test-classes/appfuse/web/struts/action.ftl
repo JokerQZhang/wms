@@ -109,7 +109,7 @@ public class ${pojo.shortName}Action extends BaseAction implements Preparable {
 
         if (delete != null) {
             ${pojoNameLower}Manager.remove(${pojoNameLower}.${getIdMethodName}());
-        	super.setJsonResult("删除成功");
+        	super.setJsonResult("DeleteSuccess");
             return "jsonResult";
         }
 

@@ -63,16 +63,18 @@
                     <i class="icon-trash icon-white"></i> <fmt:message key="button.delete"/>
                 </s:submit>
             </c:if>
-            <a href="#" class="btn btn-default" onclick="afterSave${pojo.shortName}('取消保存')">
+            <a href="#" class="btn btn-default" onclick="afterSave${pojo.shortName}('CancleSave')">
                 <i class="icon-remove"></i> <fmt:message key="button.cancel"/></a>
         </div>
     </s:form>
 </div>
 <script type="text/javascript">
 function afterSave${pojo.shortName}(data){
-	if(data=="SaveSuccess"){
+	if(data=="SaveSuccess" || data=="DeleteSuccess"){
 		${'$'}("#jokerdialogframexixi").dialog("close");
 		formPage(${'$'}("#${pojoNameLower}SearchForm"),${'$'}("#${pojoNameLower}PageNav").find("li[class='active']").find("a").html());
+	}else if(data=="SaveSuccess"){
+		${'$'}("#jokerdialogframexixi").dialog("close");
 	}else{
 		${'$'}("#jokerdialogframexixi").html(data);
 	}
