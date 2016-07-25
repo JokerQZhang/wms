@@ -1,4 +1,4 @@
-ԭ��Ŀ��wms----wms
+﻿ԭ��Ŀ��wms----wms
 1������Դ���ļ��У�ճ��һ�ݣ�Ŀ¼������wms
 2��xedkĿ¼���桰.project���ļ����޸���Ŀ��name��<name>wms</name>--��<name>wms</name>
 3��pom.xml�޸ģ�
